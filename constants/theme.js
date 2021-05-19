@@ -1,0 +1,80 @@
+export const COLORS = {
+  title_building: '#413C69',
+  title_tracker: '#4A47A3',
+  heading: '#46405C',
+  link_text: '#658280',
+  error: '#F10707',
+  white: '#FFFFFF',
+  button_primary: '#658280',
+  border_color: '#CBCBCB',
+};
+
+import {Dimensions} from 'react-native';
+
+export const ratioWidth = Dimensions.get('window').width / 1080;
+export const ratioHeight = Dimensions.get('window').height / 1920;
+
+export const SIZES = {
+  padding: 15,
+};
+
+export const FONTS = {
+  h1: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 75 * ratioWidth,
+  },
+  h2: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 70 * ratioWidth,
+  },
+  h3: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 55 * ratioWidth,
+  },
+  h4: {
+    fontFamily: 'Roboto-Bold',
+    fontSize: 45 * ratioWidth,
+  },
+  h5: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 30 * ratioWidth,
+  },
+  text: {
+    fontFamily: 'Roboto-Regular',
+    fontSize: 25 * ratioWidth,
+  },
+  link: {
+    fontFamily: 'Roboto-BoldItalic',
+    color: COLORS.link_text,
+  },
+  error: {
+    fontFamily: 'Roboto-Italic',
+    color: COLORS.error,
+  },
+  title_primary: {
+    color: COLORS.title_building,
+  },
+  title_secondary: {
+    fontFamily: 'Roboto-Regular',
+    color: COLORS.title_building,
+  },
+};
+
+export const STYLE = {
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.23,
+    shadowRadius: 2.62,
+
+    elevation: 4,
+  },
+  border: {
+    borderWidth: 2,
+    borderColor: COLORS.border_color,
+    borderRadius: 50,
+  },
+};
