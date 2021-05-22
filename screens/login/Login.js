@@ -18,6 +18,8 @@ import {
   STYLE,
 } from '../../constants';
 
+import {Input} from './components';
+
 const Login = ({navigation}) => {
   const [username, setUsername] = React.useState(null);
   const [password, setPassword] = React.useState(null);
@@ -75,49 +77,23 @@ const Login = ({navigation}) => {
 
       {/* Input section */}
       <View style={styles.input_wrapper}>
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Username</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.user_profile}
-            />
-            <TextInput
-              style={styles.input_text}
-              placeholder="Username"
-              onChangeText={text => {
-                setUsername(text);
-              }}
-              value={username}
-            />
-          </View>
-        </View>
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Password</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.key}
-            />
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input_text}
-              placeholder="*******"
-              maxLength={10}
-              numberOfLines={1}
-              onChangeText={text => {
-                setPassword(text);
-              }}
-              value={password}
-            />
-          </View>
-          <TouchableOpacity
-            onPress={() => navigation.navigate('ForgotPassword')}>
-            <Text style={styles.link_text}>Forgot your password?</Text>
-          </TouchableOpacity>
-        </View>
+        <Input
+          name="Username"
+          value={username}
+          icon={icons.user_profile}
+          setValue={setUsername}
+        />
+        <Input
+          name="Password"
+          value={password}
+          icon={icons.key}
+          setValue={setPassword}
+        />
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ForgotPassword')}
+          style={styles.link_wrapper}>
+          <Text style={styles.link_text}>Forgot your password?</Text>
+        </TouchableOpacity>
         <View style={styles.error_wrapper}>
           <Text style={styles.error_text}>{error}</Text>
         </View>
@@ -195,38 +171,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  input_field: {
-    alignItems: 'flex-start',
-    marginVertical: 19 * ratioHeight,
+  link_wrapper: {
+    alignSelf: 'flex-start',
   },
 
-  input: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    color: COLORS.heading,
-    ...FONTS.h4,
-    marginLeft: 6,
-    marginBottom: 9 * ratioHeight,
-  },
-  input_icon: {
-    width: 64 * ratioWidth,
-    height: 64 * ratioHeight,
-    position: 'absolute',
-    left: 15,
-    tintColor: COLORS.heading,
-  },
-  input_text: {
-    paddingHorizontal: 50,
-    width: 700 * ratioWidth,
-    height: 100 * ratioHeight,
-    ...STYLE.border,
-  },
   link_text: {
     ...FONTS.h5,
     ...FONTS.link,
-    marginTop: 12 * ratioHeight,
   },
   error_wrapper: {
     width: 700 * ratioWidth,

@@ -30,7 +30,7 @@ const App = () => {
         initialRouteName={plash ? 'Landing' : 'Login'}>
         <Stack.Screen
           name={plash ? 'Landing' : 'Login'}
-          component={plash ? Landing : Signup}
+          component={plash ? Landing : Login}
         />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="SendEmail" component={SendEmail} />
