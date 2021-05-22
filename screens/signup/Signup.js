@@ -18,6 +18,8 @@ import {
   STYLE,
 } from '../../constants';
 
+import {Input} from './components';
+
 const Signup = ({navigation}) => {
   const [username, setUsername] = React.useState(null);
   const [usernameError, setUsernameError] = React.useState(null);
@@ -109,89 +111,39 @@ const Signup = ({navigation}) => {
       {/* Input section */}
       <View style={styles.input_wrapper}>
         {/* Username */}
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Username</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.user_profile}
-            />
-            <TextInput
-              style={styles.input_text}
-              placeholder="Username"
-              onChangeText={text => setUsername(text)}
-            />
-          </View>
-          <View style={styles.error_wrapper}>
-            <Text style={styles.error_text}>{usernameError}</Text>
-          </View>
-        </View>
+        <Input
+          name="Username"
+          icon={icons.user_profile}
+          value={username}
+          error={usernameError}
+          setValue={setUsername}
+        />
         {/* Email */}
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Username</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.message}
-            />
-            <TextInput
-              style={styles.input_text}
-              placeholder="Email"
-              onChangeText={text => setEmail(text)}
-            />
-          </View>
-          <View style={styles.error_wrapper}>
-            <Text style={styles.error_text}>{emailError}</Text>
-          </View>
-        </View>
+        <Input
+          name="Email"
+          icon={icons.message}
+          value={email}
+          error={emailError}
+          setValue={setEmailError}
+        />
 
         {/* Password */}
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Password</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.key}
-            />
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input_text}
-              placeholder="*******"
-              maxLength={10}
-              numberOfLines={1}
-              onChangeText={text => setPassword(text)}
-            />
-          </View>
-          <View style={styles.error_wrapper}>
-            <Text style={styles.error_text}>{passwordError}</Text>
-          </View>
-        </View>
+        <Input
+          name="Password"
+          icon={icons.key}
+          value={password}
+          error={passwordError}
+          setValue={setPasswordError}
+        />
 
         {/* Confirm password */}
-        <View style={styles.input_field}>
-          <Text style={styles.text}>Password</Text>
-          <View style={styles.input}>
-            <Image
-              style={styles.input_icon}
-              resizeMode="contain"
-              source={icons.confirm}
-            />
-            <TextInput
-              secureTextEntry={true}
-              style={styles.input_text}
-              placeholder="*******"
-              maxLength={10}
-              numberOfLines={1}
-              onChangeText={text => setConfirm(text)}
-            />
-          </View>
-          <View style={styles.error_wrapper}>
-            <Text style={styles.error_text}>{confirmError}</Text>
-          </View>
-        </View>
+        <Input
+          name="Confirm password"
+          icon={icons.confirm}
+          value={confirm}
+          error={confirmError}
+          setValue={setConfirmError}
+        />
         {/* Buttons */}
         <TouchableOpacity
           style={styles.button_primary}
@@ -256,45 +208,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 
-  input_field: {
-    alignItems: 'flex-start',
-  },
-
-  input: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  text: {
-    color: COLORS.heading,
-    ...FONTS.h4,
-    marginLeft: 6,
-    marginBottom: 9 * ratioHeight,
-  },
-  input_icon: {
-    width: 64 * ratioWidth,
-    height: 64 * ratioHeight,
-    position: 'absolute',
-    left: 15,
-    tintColor: COLORS.heading,
-  },
-  input_text: {
-    paddingHorizontal: 50,
-    width: 700 * ratioWidth,
-    height: 100 * ratioHeight,
-    ...STYLE.border,
-  },
+  //Button
   link_text: {
     ...FONTS.h5,
     ...FONTS.link,
     marginTop: 12 * ratioHeight,
-  },
-  error_wrapper: {
-    width: 700 * ratioWidth,
-    alignItems: 'flex-end',
-  },
-  error_text: {
-    ...FONTS.h5,
-    ...FONTS.error,
   },
   button_primary: {
     width: 700 * ratioWidth,
