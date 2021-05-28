@@ -5,14 +5,21 @@ export const COLORS = {
   link_text: '#658280',
   error: '#F10707',
   white: '#FFFFFF',
+  black: '#000',
   primary: '#1eae98',
   secondary: '#CDCDCD',
   button_primary: '#1eae98',
   border_color: '#CBCBCB',
 
+  grey: '#aaaaaa',
+
   darkgreen: '#184D47',
   darkblue: '#150E56',
   darkred: '#CF0000',
+
+  lightgreen: '#BBFFB5',
+  lightblue: '#CDCCFF',
+  lightred: '#FFABAB',
 
   normal: '#79d70f',
   alert: '#ffd31d',

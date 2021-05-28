@@ -2,6 +2,8 @@ import Landing from './landing/Landing';
 import {Login, ForgotPassword, SendEmail} from './login';
 import {Signup, SignupSuccessful} from './signup';
 import {Home} from './home';
+import {Statistics} from './statistics';
+import {History} from './history';
 
 export {
   Landing,
@@ -11,4 +13,6 @@ export {
   Signup,
   SignupSuccessful,
   Home,
+  Statistics,
+  History,
 };

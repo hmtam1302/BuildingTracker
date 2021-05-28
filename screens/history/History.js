@@ -13,7 +13,7 @@ import Element from './Element';
 
 import {LineChart} from 'react-native-chart-kit';
 
-const Statistics = ({navigation}) => {
+const History = ({navigation}) => {
   const [selectedElement, setSelectedElement] = useState(1);
   const [selectedButton, setSelectedButton] = useState(0);
 
@@ -66,7 +66,7 @@ const Statistics = ({navigation}) => {
       {/* Main section */}
       <View style={styles.main_section}>
         {/* Title */}
-        <Text style={styles.title}>Statistics</Text>
+        <Text style={styles.title}>History</Text>
 
         {/* Element container */}
         <View style={styles.element_container}>
@@ -213,4 +213,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Statistics;
+export default History;

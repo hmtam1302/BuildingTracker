@@ -9,7 +9,7 @@ import {
   SendEmail,
   Signup,
   SignupSuccessful,
-  Home,
+  Statistics,
 } from './screens';
 
 import {Tabs} from './components';
