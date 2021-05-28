@@ -12,6 +12,8 @@ import {
   Home,
 } from './screens';
 
+import {Tabs} from './components';
+
 const Stack = createStackNavigator();
 
 const App = () => {
@@ -27,16 +29,16 @@ const App = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={plash ? 'Landing' : 'Login'}>
+        initialRouteName={plash ? 'Landing' : 'Home'}>
         <Stack.Screen
-          name={plash ? 'Landing' : 'Login'}
-          component={plash ? Landing : Home}
+          name={plash ? 'Landing' : 'Home'}
+          component={plash ? Landing : Tabs}
         />
+
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="SendEmail" component={SendEmail} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="SignupSuccessful" component={SignupSuccessful} />
-        <Stack.Screen name="Home" component={Home} />
       </Stack.Navigator>
     </NavigationContainer>
   );

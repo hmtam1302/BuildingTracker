@@ -3,8 +3,9 @@ const bell = require('../assets/icons/bell.png');
 const edit = require('../assets/icons/edit.png');
 const exchange = require('../assets/icons/exchange.png');
 const faq = require('../assets/icons/faq.png');
-const history = require('../assets/icons/history');
-const info = require('../assets/icons/info');
+const history = require('../assets/icons/history.png');
+const home = require('../assets/icons/home.png');
+const info = require('../assets/icons/info.png');
 const log_out = require('../assets/icons/log-out.png');
 const love = require('../assets/icons/love.png');
 const next = require('../assets/icons/next.png');
@@ -29,6 +30,7 @@ const confirm = require('../assets/icons/confirm.png');
 
 export default {
   edit,
+  home,
   exchange,
   faq,
   history,

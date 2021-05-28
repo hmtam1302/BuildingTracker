@@ -5,8 +5,18 @@ export const COLORS = {
   link_text: '#658280',
   error: '#F10707',
   white: '#FFFFFF',
-  button_primary: '#658280',
+  primary: '#1eae98',
+  secondary: '#CDCDCD',
+  button_primary: '#1eae98',
   border_color: '#CBCBCB',
+
+  darkgreen: '#184D47',
+  darkblue: '#150E56',
+  darkred: '#CF0000',
+
+  normal: '#79d70f',
+  alert: '#ffd31d',
+  danger: '#d63447',
 };
 
 import {Dimensions} from 'react-native';
