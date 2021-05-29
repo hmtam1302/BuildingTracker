@@ -14,7 +14,7 @@ import Element from './Element';
 import {LineChart} from 'react-native-chart-kit';
 
 const Statistics = ({navigation}) => {
-  const [selectedElement, setSelectedElement] = useState(1);
+  const [selectedElement, setSelectedElement] = useState(0);
   const [selectedButton, setSelectedButton] = useState(0);
 
   const getButtonStyle = id => {

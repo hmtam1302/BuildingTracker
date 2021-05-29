@@ -21,6 +21,8 @@ export const COLORS = {
   lightblue: '#CDCCFF',
   lightred: '#FFABAB',
 
+  cyan: '#B7F4F0',
+
   normal: '#79d70f',
   alert: '#ffd31d',
   danger: '#d63447',
