@@ -4,60 +4,65 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
+  ScrollView,
 } from 'react-native';
-import {icons, COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
+import {COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
+
+import DateTimePickerModal from 'react-native-modal-datetime-picker';
+import {Table, Row, Rows} from 'react-native-table-component';
 
 import {Header} from '../../components';
-import Element from './Element';
-
-import {LineChart} from 'react-native-chart-kit';
 
 const History = ({navigation}) => {
-  const [selectedElement, setSelectedElement] = useState(1);
-  const [selectedButton, setSelectedButton] = useState(0);
+  //Date data
+  const today = new Date();
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [fromDate, setFromDate] = useState(today);
+  const [toDate, setToDate] = useState(today);
 
-  const getButtonStyle = id => {
-    if (id === selectedButton) {
-      return {...styles.button, ...styles.button_active};
-    } else {
-      return {...styles.button, ...styles.button_not_active};
-    }
+  const getDate = date => {
+    let dateString = date.toString();
+    dateString = dateString.split(' ');
+    dateString = dateString.slice(0, 5);
+    dateString[0] = dateString[0] + ',';
+    dateString[3] = dateString[3] + ',';
+
+    return dateString.join(' ');
   };
 
-  const getTextStyle = id => {
-    if (id === selectedButton) {
-      return {...styles.button_text, ...styles.text_active};
-    } else {
-      return {...styles.button_text, ...styles.text_not_active};
-    }
-  };
+  //Table Data
+  const tableHead = ['Head', 'Head2', 'Head3', 'Head4'];
+  const tableData = [
+    ['1', '2', '3', '4'],
+    ['a', 'b', 'c', 'd'],
+    ['1', '2', '3', '456\n789'],
+    ['a', 'b', 'c', 'd'],
+  ];
 
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
-    datasets: [
-      {
-        data: [
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-        ],
-      },
-    ],
+  const [isTableVisible, setTableVisibility] = useState(false);
+  const displayTable = () => {
+    setTableVisibility(true);
   };
-
-  const chartConfig = {
-    backgroundGradientFrom: '#FFF',
-    backgroundGradientFromOpacity: 0,
-    backgroundGradientTo: '#FAFAFA',
-    backgroundGradientToOpacity: 0.5,
-    color: (opacity = 1) => `rgba(30,174,152, ${opacity})`,
-    strokeWidth: 3, // optional, default 3
-    barPercentage: 0.5,
-    useShadowColorFromDataset: false, // optional
+  const getTable = () => {
+    return (
+      isTableVisible && (
+        <View style={styles.table_container}>
+          <ScrollView vertical={true}>
+            <Table borderStyle={styles.border}>
+              <Row
+                data={tableHead}
+                style={styles.head}
+                textStyle={styles.table_head}
+              />
+              <Rows data={tableData} textStyle={styles.table_text} />
+            </Table>
+          </ScrollView>
+          <TouchableOpacity color={COLORS.primary} style={styles.button}>
+            <Text style={styles.button_text}>Export</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    );
   };
 
   return (
@@ -68,79 +73,61 @@ const History = ({navigation}) => {
         {/* Title */}
         <Text style={styles.title}>History</Text>
 
-        {/* Element container */}
-        <View style={styles.element_container}>
-          <TouchableOpacity onPress={() => setSelectedElement(0)}>
-            <Element
-              name="Temperature"
-              color={COLORS.darkgreen}
-              backgroundColor={COLORS.lightgreen}
-              icon={icons.thermometer}
-              isSelected={selectedElement === 0}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSelectedElement(1)}>
-            <Element
-              name="Noise"
-              color={COLORS.darkblue}
-              backgroundColor={COLORS.lightblue}
-              icon={icons.noise}
-              isSelected={selectedElement === 1}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSelectedElement(2)}>
-            <Element
-              name="Gas density"
-              color={COLORS.darkred}
-              backgroundColor={COLORS.lightred}
-              icon={icons.gas}
-              isSelected={selectedElement === 2}
-            />
-          </TouchableOpacity>
-        </View>
-
-        {/* Button group */}
-        <View style={styles.button_group}>
-          <View style={styles.button_wrapper}>
+        {/* From Date Picker */}
+        <View style={styles.date_picker}>
+          <Text style={styles.text}>From</Text>
+          <View>
             <TouchableOpacity
-              style={getButtonStyle(0)}
-              onPress={() => setSelectedButton(0)}>
-              <Text style={getTextStyle(0)}>Day</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={getButtonStyle(1)}
-              onPress={() => setSelectedButton(1)}>
-              <Text style={getTextStyle(1)}>Week</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              style={getButtonStyle(2)}
-              onPress={() => setSelectedButton(2)}>
-              <Text style={getTextStyle(2)}>Month</Text>
+              onPress={() => setDatePickerVisibility(true)}
+              style={styles.date_picker_button}>
+              <Text style={styles.date}>{getDate(fromDate)}</Text>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="datetime"
+                onConfirm={value => {
+                  setDatePickerVisibility(false);
+                  setFromDate(value);
+                }}
+                onCancel={() => setDatePickerVisibility(false)}
+              />
             </TouchableOpacity>
           </View>
         </View>
 
-        {/* Chart section */}
-        <View>
-          <LineChart
-            data={data}
-            width={915 * ratioWidth} // from react-native
-            height={550 * ratioHeight}
-            yAxisLabel="$"
-            yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={chartConfig}
-            bezier
-            style={styles.chart}
-          />
+        {/* To Date Picker */}
+        <View style={styles.date_picker}>
+          <Text style={styles.text}>To</Text>
+          <View>
+            <TouchableOpacity
+              onPress={() => setDatePickerVisibility(true)}
+              style={styles.date_picker_button}>
+              <Text style={styles.date}>{getDate(toDate)}</Text>
+              <DateTimePickerModal
+                isVisible={isDatePickerVisible}
+                mode="datetime"
+                onConfirm={value => {
+                  setDatePickerVisibility(false);
+                  setToDate(value);
+                }}
+                onCancel={() => setDatePickerVisibility(false)}
+              />
+            </TouchableOpacity>
+          </View>
+
+          <TouchableOpacity
+            color={COLORS.primary}
+            onPress={displayTable}
+            style={styles.button}>
+            <Text style={styles.button_text}>Find</Text>
+          </TouchableOpacity>
+
+          {/* Table compoment */}
+          {getTable()}
         </View>
       </View>
     </View>
   );
 };
-
 const styles = StyleSheet.create({
   container: {
     alignItems: 'center',
@@ -149,67 +136,60 @@ const styles = StyleSheet.create({
     paddingTop: 20,
   },
 
-  main_section: {
-    width: 900 * ratioWidth,
-    marginTop: 15,
-  },
-
+  main_section: {width: 900 * ratioWidth, marginTop: 15},
   title: {
     ...FONTS.h2,
     color: COLORS.title_building,
     marginBottom: 15,
   },
 
-  element_container: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+  text: {
+    ...FONTS.h4,
+    marginBottom: 5,
   },
 
-  // Button group
-  button_group: {
-    marginVertical: 15,
+  date_picker_button: {
+    borderColor: COLORS.primary,
+    borderRadius: 5,
+    padding: 5,
+    borderWidth: 1,
+  },
+  date: {
+    ...FONTS.h4,
+    fontFamily: 'Roboto-Bold',
+  },
+
+  table_container: {
+    padding: 16,
+    paddingTop: 15,
+    backgroundColor: '#fff',
     width: 900 * ratioWidth,
+    height: 750 * ratioHeight,
   },
+  head: {height: 40, backgroundColor: '#f1f8ff'},
+  table_text: {margin: 6, textAlign: 'center'},
+  table_head: {
+    margin: 6,
+    textAlign: 'center',
+    fontFamily: 'Roboto-Bold',
+  },
+  border: {borderWidth: 2, borderColor: '#c8e1ff'},
 
-  button_container: {
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  button_wrapper: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-  },
+  // Button
   button: {
+    backgroundColor: COLORS.primary,
+    alignSelf: 'flex-end',
     width: 250 * ratioWidth,
-    height: 90 * ratioHeight,
-    borderRadius: 50 * ratioWidth,
-    justifyContent: 'center',
+    paddingVertical: 5,
+    borderRadius: 10,
+    marginTop: 5,
     alignItems: 'center',
+    justifyContent: 'center',
   },
   button_text: {
     color: COLORS.white,
-    ...FONTS.h3,
-  },
-
-  button_active: {
-    backgroundColor: COLORS.primary,
-  },
-  text_active: {
-    color: COLORS.white,
-  },
-
-  button_not_active: {
-    backgroundColor: COLORS.white,
-  },
-  text_not_active: {
-    color: COLORS.black,
-  },
-
-  // Chart
-
-  chart: {
-    marginVertical: 10,
-    marginTop: 50,
+    fontFamily: 'Roboto-Bold',
+    fontSize: 15,
   },
 });
 

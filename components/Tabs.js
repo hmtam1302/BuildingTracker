@@ -7,7 +7,7 @@ import {
 import Svg, {Path} from 'react-native-svg';
 import {isIphoneX} from 'react-native-iphone-x-helper';
 
-import {Home, Statistics} from '../screens';
+import {Home, Statistics, History} from '../screens';
 
 import {COLORS, icons} from '../constants';
 
@@ -137,8 +137,8 @@ const Tabs = () => {
       />
 
       <Tab.Screen
-        name="Like"
-        component={Home}
+        name="History"
+        component={History}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
