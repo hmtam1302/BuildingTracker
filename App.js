@@ -11,6 +11,9 @@ import {
   SignupSuccessful,
 } from './screens';
 
+//For testing
+import Test from './screens/Test';
+
 import {Tabs} from './components';
 
 const Stack = createStackNavigator();

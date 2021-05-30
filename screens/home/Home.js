@@ -1,32 +1,125 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {View, StyleSheet} from 'react-native';
 import {icons, COLORS} from '../../constants';
 
 import Element from './Element';
 import {Header} from '../../components';
 
+import {TempController, NoiseController, GasController, DATA} from '../../data';
+
 const Home = ({navigation}) => {
-  //Dummy data
+  const getStatus = (value, limit) => {
+    if (value / limit < 0.75) {
+      return 'Normal';
+    } else if (0.75 >= value / limit && value / limit < 0.9) {
+      return 'Alert';
+    } else {
+      return 'Danger';
+    }
+  };
+
+  //Fetch temperature data
   const [temp, setTemp] = useState({
-    limit: 35,
-    current: 27,
+    limit: DATA.TEMP_LIMIT,
+    current: 0,
+    status: 'Normal',
+    detail: 'None',
+  });
+  useEffect(() => {
+    const tempController = new TempController();
+    tempController.fetchData().then(res => {
+      let obj = JSON.parse(res.last_value).data;
+      setTemp({
+        limit: DATA.TEMP_LIMIT,
+        current: obj.split('-')[0],
+        status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT),
+        detail: 'None',
+      });
+
+      
+    });
+    const interval = setInterval(() => {
+      tempController.fetchData().then(res => {
+        let obj = JSON.parse(res.last_value).data;
+        setTemp({
+          limit: DATA.TEMP_LIMIT,
+          current: obj.split('-')[0],
+          status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT),
+          detail: 'None',
+        });
+      });
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  //Fetch noise controller
+  const [noise, setNoise] = useState({
+    limit: DATA.NOISE_LIMIT,
+    current: 0,
     status: 'Normal',
     detail: 'None',
   });
 
+  useEffect(() => {
+    const noiseController = new NoiseController();
+    noiseController.fetchData().then(res => {
+      let obj = JSON.parse(res.last_value).data;
+      setNoise({
+        limit: DATA.NOISE_LIMIT,
+        current: obj,
+        status: getStatus(obj, DATA.NOISE_LIMIT),
+        detail: 'None',
+      });
+    });
+    const interval = setInterval(() => {
+      noiseController.fetchData().then(res => {
+        let obj = JSON.parse(res.last_value).data;
+        setTemp({
+          limit: DATA.NOISE_LIMIT,
+          current: obj,
+          status: getStatus(obj, DATA.NOISE_LIMIT),
+          detail: 'None',
+        });
+      });
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  //Fetch gas data
   const [gas, setGas] = useState({
-    limit: 35,
-    current: 27,
-    status: 'Alert',
+    limit: DATA.GAS_LIMIT,
+    current: 0,
+    status: 'Normal',
     detail: 'None',
   });
 
-  const [noise, setNoise] = useState({
-    limit: 35,
-    current: 27,
-    status: 'Danger',
-    detail: 'None',
-  });
+  useEffect(() => {
+    const gasController = new GasController();
+    gasController.fetchData().then(res => {
+      let obj = JSON.parse(res.last_value).data;
+      setGas({
+        limit: DATA.GAS_LIMIT,
+        current: obj,
+        status: getStatus(obj, DATA.GAS_LIMIT),
+        detail: 'None',
+      });
+    });
+    const interval = setInterval(() => {
+      gasController.fetchData().then(res => {
+        let obj = JSON.parse(res.last_value).data;
+        setTemp({
+          limit: DATA.GAS_LIMIT,
+          current: obj,
+          status: getStatus(obj, DATA.GAS_LIMIT),
+          detail: 'None',
+        });
+      });
+    }, 60 * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
     <View style={styles.container}>
