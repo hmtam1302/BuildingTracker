@@ -35,8 +35,6 @@ const Home = ({navigation}) => {
         status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT),
         detail: 'None',
       });
-
-      
     });
     const interval = setInterval(() => {
       tempController.fetchData().then(res => {
@@ -75,7 +73,7 @@ const Home = ({navigation}) => {
     const interval = setInterval(() => {
       noiseController.fetchData().then(res => {
         let obj = JSON.parse(res.last_value).data;
-        setTemp({
+        setNoise({
           limit: DATA.NOISE_LIMIT,
           current: obj,
           status: getStatus(obj, DATA.NOISE_LIMIT),
@@ -109,7 +107,7 @@ const Home = ({navigation}) => {
     const interval = setInterval(() => {
       gasController.fetchData().then(res => {
         let obj = JSON.parse(res.last_value).data;
-        setTemp({
+        setGas({
           limit: DATA.GAS_LIMIT,
           current: obj,
           status: getStatus(obj, DATA.GAS_LIMIT),

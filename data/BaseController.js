@@ -12,6 +12,24 @@ class BaseController {
     let json = await response.json();
     return json;
   }
+
+  async sendFeed(url, data) {
+    let value = {
+      datum: {
+        value: data,
+      },
+    };
+
+    await fetch(url, {
+      method: 'POST',
+      headers: {
+        'x-aio-key': this.key,
+      },
+      body: {
+        value: JSON.stringify(value),
+      },
+    });
+  }
 }
 
 export {BaseController};
