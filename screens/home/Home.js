@@ -5,15 +5,24 @@ import {icons, COLORS} from '../../constants';
 import Element from './Element';
 import {Header} from '../../components';
 
-import {TempController, NoiseController, GasController, DATA} from '../../data';
+import {
+  BaseController,
+  TempController,
+  NoiseController,
+  GasController,
+  DATA,
+} from '../../data';
 
 const Home = ({navigation}) => {
+  //Get status of value
   const getStatus = (value, limit) => {
     if (value / limit < 0.75) {
       return 'Normal';
-    } else if (0.75 >= value / limit && value / limit < 0.9) {
+    } else if (value / limit >= 0.75 && value / limit < 0.9) {
       return 'Alert';
     } else {
+      let controller = new BaseController();
+      //controller.sendFeed('Test').then(res => console.log(res));
       return 'Danger';
     }
   };

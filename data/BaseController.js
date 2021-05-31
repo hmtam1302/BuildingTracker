@@ -4,31 +4,25 @@ class BaseController {
   constructor() {
     this.username = ADAFRUIT_IO_USERNAME;
     this.key = ADAFRUIT_IO_KEY;
+    this.url = 'https://io.adafruit.com/api/v2/hmtam1302/feeds/led/data'; //For testing
   }
 
-  async fetchData() {
-    let url = 'https://io.adafruit.com/api/v2/hmtam1302/feeds/led';
-    let response = await fetch(url);
-    let json = await response.json();
-    return json;
-  }
+  async fetchData() {}
 
-  async sendFeed(url, data) {
+  async sendFeed(data) {
     let value = {
-      datum: {
-        value: data,
-      },
+      value: data,
     };
-
-    await fetch(url, {
+    let response = await fetch(this.url, {
       method: 'POST',
       headers: {
+        'content-type': 'application/json',
         'x-aio-key': this.key,
       },
-      body: {
-        value: JSON.stringify(value),
-      },
+      body: JSON.stringify(value),
     });
+    let json = await response.json();
+    return json;
   }
 }
 
