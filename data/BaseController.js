@@ -1,9 +1,5 @@
-import {ADAFRUIT_IO_USERNAME, ADAFRUIT_IO_KEY} from '@env';
-
 class BaseController {
   constructor() {
-    this.username = ADAFRUIT_IO_USERNAME;
-    this.key = ADAFRUIT_IO_KEY;
     this.url = 'https://io.adafruit.com/api/v2/hmtam1302/feeds/led/data'; //For testing
   }
 
@@ -11,13 +7,13 @@ class BaseController {
 
   async sendFeed(data) {
     let value = {
-      value: data,
+      value: `{\"id\":\"2\",\"name\":\"SPEAKER\",\"data\":\"${data}\",\"unit\":\"\"}`,
     };
     let response = await fetch(this.url, {
       method: 'POST',
       headers: {
         'content-type': 'application/json',
-        'x-aio-key': this.key,
+        'x-aio-key': 'aio_igfb19Ck5dgwMgHxdbl7R8lB6MTw',
       },
       body: JSON.stringify(value),
     });

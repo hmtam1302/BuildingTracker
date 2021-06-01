@@ -22,7 +22,7 @@ const Home = ({navigation}) => {
       return 'Alert';
     } else {
       let controller = new BaseController();
-      //controller.sendFeed('Test').then(res => console.log(res));
+      controller.sendFeed('Test').then(res => console.log(res));
       return 'Danger';
     }
   };
@@ -55,7 +55,7 @@ const Home = ({navigation}) => {
           detail: 'None',
         });
       });
-    }, 60 * 1000);
+    }, DATA.TIME_REQUEST * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -89,7 +89,7 @@ const Home = ({navigation}) => {
           detail: 'None',
         });
       });
-    }, 60 * 1000);
+    }, DATA.TIME_REQUEST * 1000);
 
     return () => clearInterval(interval);
   }, []);
@@ -123,7 +123,7 @@ const Home = ({navigation}) => {
           detail: 'None',
         });
       });
-    }, 60 * 1000);
+    }, DATA.TIME_REQUEST * 1000);
 
     return () => clearInterval(interval);
   }, []);

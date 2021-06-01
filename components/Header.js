@@ -12,6 +12,77 @@ const Header = () => {
     {label: '2', value: '2'},
   ]);
 
+  const [hasNotification, setHasNotification] = useState(false);
+  // useEffect(() => {
+  //   const controller = new BaseController();
+  //   controller.getNotifications()
+  // })
+
+  const styles = StyleSheet.create({
+    // Header
+    header_container: {
+      justifyContent: 'center',
+      alignItems: 'center',
+    },
+    header: {
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      width: 900 * ratioWidth,
+    },
+    user_section: {
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'row',
+    },
+    icon_section: {
+      marginRight: 29 * ratioWidth,
+      backgroundColor: COLORS.button_primary,
+      borderRadius: 25 * ratioWidth,
+    },
+    icon: {
+      width: ratioWidth * 128,
+      height: ratioHeight * 128,
+    },
+    greeting: {
+      justifyContent: 'space-between',
+    },
+    main_text: {
+      ...FONTS.h2,
+      color: COLORS.heading,
+    },
+    secondary_text: {
+      ...FONTS.h5,
+      color: COLORS.heading,
+    },
+    noti_icon: {
+      width: 64 * ratioWidth,
+      height: 64 * ratioHeight,
+    },
+
+    // Floor
+    floor_container: {
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      flexDirection: 'row',
+      width: 600 * ratioWidth,
+      marginTop: 39 * ratioHeight,
+    },
+    floor_text: {
+      ...FONTS.h4,
+      color: COLORS.heading,
+      marginRight: 20,
+    },
+    drop_down: {
+      width: 550 * ratioWidth,
+      height: 75 * ratioHeight,
+    },
+    drop_down_item: {
+      width: 550 * ratioWidth,
+      height: 75 * ratioHeight,
+    },
+  });
+
   return (
     <View style={styles.header_container}>
       <View style={styles.header}>
@@ -60,70 +131,5 @@ const Header = () => {
     </View>
   );
 };
-
-const styles = StyleSheet.create({
-  // Header
-  header_container: {
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  header: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: 900 * ratioWidth,
-  },
-  user_section: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'row',
-  },
-  icon_section: {
-    marginRight: 29 * ratioWidth,
-    backgroundColor: COLORS.button_primary,
-    borderRadius: 25 * ratioWidth,
-  },
-  icon: {
-    width: ratioWidth * 128,
-    height: ratioHeight * 128,
-  },
-  greeting: {
-    justifyContent: 'space-between',
-  },
-  main_text: {
-    ...FONTS.h2,
-    color: COLORS.heading,
-  },
-  secondary_text: {
-    ...FONTS.h5,
-    color: COLORS.heading,
-  },
-  noti_icon: {
-    width: 64 * ratioWidth,
-    height: 64 * ratioHeight,
-  },
-
-  // Floor
-  floor_container: {
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    flexDirection: 'row',
-    width: 600 * ratioWidth,
-    marginTop: 39 * ratioHeight,
-  },
-  floor_text: {
-    ...FONTS.h4,
-    color: COLORS.heading,
-    marginRight: 20,
-  },
-  drop_down: {
-    width: 550 * ratioWidth,
-    height: 75 * ratioHeight,
-  },
-  drop_down_item: {
-    width: 550 * ratioWidth,
-    height: 75 * ratioHeight,
-  },
-});
 
 export default Header;
