@@ -21,12 +21,23 @@ const Home = ({navigation}) => {
     } else if (value / limit >= 0.75 && value / limit < 0.9) {
       return 'Alert';
     } else {
+      //Send data to speaker
       let controller = new BaseController();
-      controller.sendFeed('Test').then(res => console.log(res));
+      controller.sendFeed('100');
       return 'Danger';
     }
   };
 
+  useEffect(() => {
+    if (
+      temp.status !== 'Danger' &&
+      noise.status !== 'Danger' &&
+      gas.status !== 'Danger'
+    ) {
+      let controller = new BaseController();
+      controller.sendFeed('0');
+    }
+  });
   //Fetch temperature data
   const [temp, setTemp] = useState({
     limit: DATA.TEMP_LIMIT,
