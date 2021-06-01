@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
+  SafeAreaView,
 } from 'react-native';
 
 import {
@@ -38,7 +39,7 @@ const ForgotPassword = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Back button */}
       <TouchableOpacity onPress={() => navigation.goBack()}>
         <Image
@@ -118,7 +119,7 @@ const ForgotPassword = ({navigation}) => {
           resizeMode="contain"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

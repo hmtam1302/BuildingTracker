@@ -3,7 +3,7 @@ import {
   View,
   Image,
   Text,
-  TextInput,
+  SafeAreaView,
   TouchableOpacity,
   StyleSheet,
 } from 'react-native';
@@ -60,7 +60,7 @@ const Login = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Title section */}
       <View style={styles.title_wrapper}>
         <View>
@@ -125,7 +125,7 @@ const Login = ({navigation}) => {
           resizeMode="contain"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

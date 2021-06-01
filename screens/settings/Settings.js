@@ -1,12 +1,12 @@
 import React from 'react';
-import {Text, View, StyleSheet, Image} from 'react-native';
+import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
 
-import {COLORS, FONTS, icons, ratioHeight, ratioWidth} from '../../constants';
+import {COLORS, FONTS, icons, ratioWidth} from '../../constants';
 import Element from './Element';
 
 const Settings = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.header_icon_wrapper}>
@@ -59,7 +59,7 @@ const Settings = ({navigation}) => {
           dest="Feedbacks"
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

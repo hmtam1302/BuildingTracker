@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react';
-import {View, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {icons, COLORS} from '../../constants';
 
 import Element from './Element';
@@ -28,6 +28,7 @@ const Home = ({navigation}) => {
     }
   };
 
+  //If nothing is dangerous, send feed to speaker
   useEffect(() => {
     if (
       temp.status !== 'Danger' &&
@@ -140,7 +141,7 @@ const Home = ({navigation}) => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header />
       {/* Main section */}
       <View style={styles.main_section}>
@@ -165,7 +166,7 @@ const Home = ({navigation}) => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

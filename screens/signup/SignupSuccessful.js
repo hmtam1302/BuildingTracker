@@ -1,5 +1,12 @@
 import React from 'react';
-import {View, Image, Text, TouchableOpacity, StyleSheet} from 'react-native';
+import {
+  View,
+  Image,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  SafeAreaView,
+} from 'react-native';
 
 import {
   icons,
@@ -13,7 +20,7 @@ import {
 
 const SignupSuccessful = ({navigation}) => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       {/* Back button */}
       <TouchableOpacity>
         <Image
@@ -55,7 +62,7 @@ const SignupSuccessful = ({navigation}) => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

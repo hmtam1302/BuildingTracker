@@ -4,6 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
+  SafeAreaView,
   ScrollView,
 } from 'react-native';
 import {COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
@@ -66,7 +67,7 @@ const History = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header />
       {/* Main section */}
       <View style={styles.main_section}>
@@ -125,7 +126,7 @@ const History = ({navigation}) => {
           {getTable()}
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 const styles = StyleSheet.create({

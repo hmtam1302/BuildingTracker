@@ -1,10 +1,10 @@
 import React from 'react';
-import {View, Image, StyleSheet} from 'react-native';
+import {View, Image, StyleSheet, SafeAreaView} from 'react-native';
 import {images, icons, COLORS, ratioHeight, ratioWidth} from '../../constants';
 
 const Landing = () => {
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <View style={styles.wrapper}>
         <Image
           source={icons.logo_large}
@@ -17,7 +17,7 @@ const Landing = () => {
           style={styles.background}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -4,7 +4,7 @@ import {
   StyleSheet,
   Text,
   TouchableOpacity,
-  Dimensions,
+  SafeAreaView,
 } from 'react-native';
 import {icons, COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
 
@@ -61,7 +61,7 @@ const Statistics = ({navigation}) => {
   };
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Header />
       {/* Main section */}
       <View style={styles.main_section}>
@@ -137,7 +137,7 @@ const Statistics = ({navigation}) => {
           />
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
