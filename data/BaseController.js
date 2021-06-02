@@ -6,9 +6,9 @@ class BaseController {
     this.BBC_KEY1 = null;
   }
 
-  async fetchData() {}
-
-  async sendFeed(data) {
+  //Fetch and send data to feed
+  async fetchFeedData() {}
+  async sendFeedData(data) {
     //Get key
     let key = null;
     await this.getKey().then(value => (key = value.keyBBC));
@@ -44,11 +44,191 @@ class BaseController {
     // );
     return json;
   }
-
   async getKey() {
     let response = await fetch('http://dadn.esp32thanhdanh.link/');
     let json = await response.json();
     return json;
+  }
+
+  //Fetch data for statistics
+  async fetchStatistics(element, type) {
+    let url = this.getURL(element);
+    let time = this.getTime(type);
+    let start_time = new Date(time[0]).toISOString();
+    let end_time = new Date(time[1]).toISOString();
+
+    let data = null;
+    data = await this.getStatisticData(url, start_time, end_time, type);
+    return data;
+  }
+  getURL(element) {
+    let url = 'https://io.adafruit.com/api/v2/';
+
+    //Find url
+    switch (element) {
+      case 0:
+        url += 'CSE_BBC/feeds/bk-iot-temp-humid/data';
+        break;
+      case 1:
+        url += 'CSE_BBC1/feeds/bk-iot-sound/data';
+        break;
+      case 2:
+        url += 'CSE_BBC1/feeds/bk-iot-gas/data';
+        break;
+    }
+    return url;
+  }
+  getTime(type) {
+    //Find parameter
+    let date = new Date();
+    let start_time = null;
+    let end_time = null;
+
+    switch (type) {
+      case 0:
+        end_time = new Date();
+        start_time = date.setHours(0, 0, 0, 0);
+        break;
+      case 1:
+        let current_day = date.getDay();
+        end_time = new Date();
+        start_time = new Date(date.setDate(date.getDate() - current_day + 1));
+        start_time.setHours(0, 0, 0, 0);
+        break;
+      case 2:
+        start_time = new Date(date.setDate(1));
+        start_time.setHours(0, 0, 0, 0);
+        end_time = date;
+        break;
+    }
+    return [start_time, end_time];
+  }
+  async getStatisticData(url, start_time, end_time, type) {
+    let start = new Date(start_time);
+    let temp = new Date(start);
+    let end = new Date(end_time);
+    let data = {
+      labels: [],
+      datasets: [{data: []}],
+    };
+    switch (type) {
+      case 0:
+        let labelStart = 0;
+        let labelEnd = 3;
+
+        while (start < end) {
+          temp.setHours(temp.getHours() + 3);
+          if (temp > end) {
+            temp = end;
+          }
+
+          let queryData = null;
+          await fetch(
+            url +
+              `?start_time=${start.toISOString()}&end_time=${temp.toISOString()}&limit=1000`,
+          )
+            .then(res => res.json())
+            .then(json => (queryData = json));
+
+          let summary = this.getStatisticSummary(
+            labelStart,
+            labelEnd,
+            queryData,
+          );
+          //Set for data
+          data.labels.push(`${labelStart}-${labelEnd}`);
+          data.datasets[0].data.push(summary);
+
+          //Set value for a new loop
+          labelStart = labelEnd;
+          labelEnd += 3;
+
+          start.setHours(start.getHours() + 3);
+        }
+        return data;
+      case 1:
+        let days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+        let index = 0;
+        while (start < end) {
+          temp.setDate(temp.getDate() + 1);
+          if (temp > end) {
+            temp = end;
+          }
+
+          //Query data
+          let queryData = null;
+          await fetch(
+            url +
+              `?start_time=${start.toISOString()}&end_time=${temp.toISOString()}&limit=1000`,
+          )
+            .then(res => res.json())
+            .then(json => (queryData = json));
+
+          let summary = this.getStatisticSummary(
+            labelStart,
+            labelEnd,
+            queryData,
+          );
+
+          //Add summary and label to data
+          data.labels.push(days[index++]);
+          data.datasets[0].data.push(summary);
+
+          //Update value for query
+          start.setDate(start.getDate() + 1);
+        }
+        return data;
+      case 2:
+        let weeks = ['Week 1', 'Week 2', 'Week 3', 'Week 4', 'Week 5'];
+        index = 0;
+        while (start < end) {
+          temp.setDate(temp.getDate() + 7);
+          if (temp > end) {
+            temp = end;
+          }
+
+          //Query data
+          let queryData = null;
+          await fetch(
+            url +
+              `?start_time=${start.toISOString()}&end_time=${temp.toISOString()}&limit=1000`,
+          )
+            .then(res => res.json())
+            .then(json => (queryData = json));
+
+          let summary = this.getStatisticSummary(
+            labelStart,
+            labelEnd,
+            queryData,
+          );
+
+          //Add summary and label to data
+          data.labels.push(weeks[index++]);
+          data.datasets[0].data.push(summary);
+
+          //Update value for query
+          start.setDate(start.getDate() + 7);
+        }
+        return data;
+    }
+  }
+  getStatisticSummary(start, end, queryData) {
+    let total = 0;
+    let countNaN = 0;
+    queryData.map(ele => {
+      try {
+        let value = JSON.parse(ele.value).data.split('-')[0];
+        if (isNaN(parseFloat(value))) {
+          countNaN++;
+        } else {
+          total += parseFloat(value);
+        }
+      } catch {
+        countNaN++;
+      }
+    });
+    total = total / (queryData.length - countNaN);
+    return total;
   }
 }
 

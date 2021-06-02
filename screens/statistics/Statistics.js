@@ -1,15 +1,24 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
+  ActivityIndicator,
   View,
   StyleSheet,
   Text,
   TouchableOpacity,
   SafeAreaView,
+  ScrollView,
 } from 'react-native';
 import {icons, COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
 
 import {Header} from '../../components';
 import Element from './Element';
+
+import {
+  BaseController,
+  TempController,
+  NoiseController,
+  GasController,
+} from '../../data';
 
 import {LineChart} from 'react-native-chart-kit';
 
@@ -33,21 +42,22 @@ const Statistics = ({navigation}) => {
     }
   };
 
-  const data = {
-    labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'June'],
-    datasets: [
-      {
-        data: [
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-          Math.random() * 100,
-        ],
-      },
-    ],
-  };
+  const [data, setData] = useState(null);
+  const [indicator, setIndicator] = useState(true);
+
+  useEffect(() => {
+    //Get data for statistic
+    async function getStatistic() {
+      let controller = new BaseController();
+      await controller
+        .fetchStatistics(selectedElement, selectedButton)
+        .then(value => {
+          setData(value);
+          setIndicator(false);
+        });
+    }
+    getStatistic();
+  }, [selectedElement, selectedButton]);
 
   const chartConfig = {
     backgroundGradientFrom: '#FFF',
@@ -70,7 +80,11 @@ const Statistics = ({navigation}) => {
 
         {/* Element container */}
         <View style={styles.element_container}>
-          <TouchableOpacity onPress={() => setSelectedElement(0)}>
+          <TouchableOpacity
+            onPress={() => {
+              setIndicator(true);
+              setSelectedElement(0);
+            }}>
             <Element
               name="Temperature"
               color={COLORS.darkgreen}
@@ -79,7 +93,11 @@ const Statistics = ({navigation}) => {
               isSelected={selectedElement === 0}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSelectedElement(1)}>
+          <TouchableOpacity
+            onPress={() => {
+              setIndicator(true);
+              setSelectedElement(1);
+            }}>
             <Element
               name="Noise"
               color={COLORS.darkblue}
@@ -88,7 +106,11 @@ const Statistics = ({navigation}) => {
               isSelected={selectedElement === 1}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setSelectedElement(2)}>
+          <TouchableOpacity
+            onPress={() => {
+              setIndicator(true);
+              setSelectedElement(2);
+            }}>
             <Element
               name="Gas density"
               color={COLORS.darkred}
@@ -104,38 +126,57 @@ const Statistics = ({navigation}) => {
           <View style={styles.button_wrapper}>
             <TouchableOpacity
               style={getButtonStyle(0)}
-              onPress={() => setSelectedButton(0)}>
+              onPress={() => {
+                setIndicator(true);
+                setSelectedButton(0);
+              }}>
               <Text style={getTextStyle(0)}>Day</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={getButtonStyle(1)}
-              onPress={() => setSelectedButton(1)}>
+              onPress={() => {
+                setIndicator(true);
+                setSelectedButton(1);
+              }}>
               <Text style={getTextStyle(1)}>Week</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={getButtonStyle(2)}
-              onPress={() => setSelectedButton(2)}>
+              onPress={() => {
+                setIndicator(true);
+                setSelectedButton(2);
+              }}>
               <Text style={getTextStyle(2)}>Month</Text>
             </TouchableOpacity>
           </View>
         </View>
 
         {/* Chart section */}
-        <View>
-          <LineChart
-            data={data}
-            width={915 * ratioWidth} // from react-native
-            height={550 * ratioHeight}
-            yAxisLabel="$"
-            yAxisSuffix="k"
-            yAxisInterval={1} // optional, defaults to 1
-            chartConfig={chartConfig}
-            bezier
-            style={styles.chart}
-          />
-        </View>
+        <ScrollView vertical={true}>
+          {indicator ? (
+            <ActivityIndicator size="large" color={COLORS.primary} />
+          ) : (
+            <LineChart
+              data={data}
+              width={915 * ratioWidth} // from react-native
+              height={550 * ratioHeight}
+              yAxisSuffix={
+                selectedElement === 0
+                  ? '\u00b0C'
+                  : selectedElement === 1
+                  ? 'dB'
+                  : 'mg/m³'
+              }
+              yAxisInterval={1} // optional, defaults to 1
+              chartConfig={chartConfig}
+              bezier
+              fromZero={true}
+              style={styles.chart}
+            />
+          )}
+        </ScrollView>
       </View>
     </SafeAreaView>
   );

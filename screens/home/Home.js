@@ -23,7 +23,7 @@ const Home = ({navigation}) => {
     } else {
       //Send data to speaker
       let controller = new BaseController();
-      controller.sendFeed('100');
+      controller.sendFeedData('100');
       return 'Danger';
     }
   };
@@ -36,7 +36,7 @@ const Home = ({navigation}) => {
       gas.status !== 'Danger'
     ) {
       let controller = new BaseController();
-      controller.sendFeed('0');
+      controller.sendFeedData('0');
     }
   });
   //Fetch temperature data
@@ -48,7 +48,7 @@ const Home = ({navigation}) => {
   });
   useEffect(() => {
     const tempController = new TempController();
-    tempController.fetchData().then(res => {
+    tempController.fetchFeedData().then(res => {
       let obj = JSON.parse(res.last_value).data;
       setTemp({
         limit: DATA.TEMP_LIMIT,
@@ -58,7 +58,7 @@ const Home = ({navigation}) => {
       });
     });
     const interval = setInterval(() => {
-      tempController.fetchData().then(res => {
+      tempController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setTemp({
           limit: DATA.TEMP_LIMIT,
@@ -82,7 +82,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     const noiseController = new NoiseController();
-    noiseController.fetchData().then(res => {
+    noiseController.fetchFeedData().then(res => {
       let obj = JSON.parse(res.last_value).data;
       setNoise({
         limit: DATA.NOISE_LIMIT,
@@ -92,7 +92,7 @@ const Home = ({navigation}) => {
       });
     });
     const interval = setInterval(() => {
-      noiseController.fetchData().then(res => {
+      noiseController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setNoise({
           limit: DATA.NOISE_LIMIT,
@@ -116,7 +116,7 @@ const Home = ({navigation}) => {
 
   useEffect(() => {
     const gasController = new GasController();
-    gasController.fetchData().then(res => {
+    gasController.fetchFeedData().then(res => {
       let obj = JSON.parse(res.last_value).data;
       setGas({
         limit: DATA.GAS_LIMIT,
@@ -126,7 +126,7 @@ const Home = ({navigation}) => {
       });
     });
     const interval = setInterval(() => {
-      gasController.fetchData().then(res => {
+      gasController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setGas({
           limit: DATA.GAS_LIMIT,
