@@ -6,20 +6,27 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
+  ActivityIndicator,
+  Alert,
 } from 'react-native';
-import {COLORS, FONTS, ratioWidth, ratioHeight} from '../../constants';
+import {COLORS, FONTS, icons, ratioWidth, ratioHeight} from '../../constants';
 
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import {Table, Row, Rows} from 'react-native-table-component';
 
 import {Header} from '../../components';
+import Element from './Element';
+
+import {BaseController} from '../../data';
 
 const History = ({navigation}) => {
   //Date data
-  const today = new Date();
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-  const [fromDate, setFromDate] = useState(today);
-  const [toDate, setToDate] = useState(today);
+  const [isFromDatePickerVisible, setFromDatePickerVisibility] = useState(
+    false,
+  );
+  const [isToDatePickerVisible, setToDatePickerVisibility] = useState(false);
+  const [fromDate, setFromDate] = useState(new Date());
+  const [toDate, setToDate] = useState(null);
 
   const getDate = date => {
     let dateString = date.toString();
@@ -32,17 +39,26 @@ const History = ({navigation}) => {
   };
 
   //Table Data
-  const tableHead = ['Head', 'Head2', 'Head3', 'Head4'];
-  const tableData = [
-    ['1', '2', '3', '4'],
-    ['a', 'b', 'c', 'd'],
-    ['1', '2', '3', '456\n789'],
-    ['a', 'b', 'c', 'd'],
-  ];
+  const tableHead = ['Date', 'Value'];
+  const [tableData, setTableData] = useState(null);
 
+  //Utilities
   const [isTableVisible, setTableVisibility] = useState(false);
-  const displayTable = () => {
-    setTableVisibility(true);
+  const [isIndicatorVisible, setIndicatorVisibility] = useState(false);
+  const [selectedElement, setSelectedElement] = useState(0);
+
+  const displayTable = async () => {
+    setIndicatorVisibility(true);
+    const controller = new BaseController();
+    let data = await controller.fetchHistory(fromDate, toDate, selectedElement);
+    if (data.length === 0) {
+      showAlert('No data found');
+      setTableVisibility(false);
+    } else {
+      setTableData(data);
+      setTableVisibility(true);
+    }
+    setIndicatorVisibility(false);
   };
   const getTable = () => {
     return (
@@ -66,66 +82,130 @@ const History = ({navigation}) => {
     );
   };
 
+  const getIndicator = () => {
+    return (
+      isIndicatorVisible && (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      )
+    );
+  };
+
+  const showAlert = msg => {
+    Alert.alert('Error', msg, [{text: 'OK'}]);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Header />
       {/* Main section */}
-      <View style={styles.main_section}>
-        {/* Title */}
-        <Text style={styles.title}>History</Text>
-
-        {/* From Date Picker */}
-        <View style={styles.date_picker}>
-          <Text style={styles.text}>From</Text>
-          <View>
+      <ScrollView style={styles.scrollView}>
+        <View style={styles.main_section}>
+          {/* Title */}
+          <Text style={styles.title}>History</Text>
+          <View style={styles.element_container}>
             <TouchableOpacity
-              onPress={() => setDatePickerVisibility(true)}
-              style={styles.date_picker_button}>
-              <Text style={styles.date}>{getDate(fromDate)}</Text>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="datetime"
-                onConfirm={value => {
-                  setDatePickerVisibility(false);
-                  setFromDate(value);
-                }}
-                onCancel={() => setDatePickerVisibility(false)}
+              onPress={() => {
+                setSelectedElement(0);
+              }}>
+              <Element
+                name="Temperature"
+                color={COLORS.darkgreen}
+                backgroundColor={COLORS.lightgreen}
+                icon={icons.thermometer}
+                isSelected={selectedElement === 0}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedElement(1);
+              }}>
+              <Element
+                name="Noise"
+                color={COLORS.darkblue}
+                backgroundColor={COLORS.lightblue}
+                icon={icons.noise}
+                isSelected={selectedElement === 1}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setSelectedElement(2);
+              }}>
+              <Element
+                name="Gas density"
+                color={COLORS.darkred}
+                backgroundColor={COLORS.lightred}
+                icon={icons.gas}
+                isSelected={selectedElement === 2}
               />
             </TouchableOpacity>
           </View>
-        </View>
-
-        {/* To Date Picker */}
-        <View style={styles.date_picker}>
-          <Text style={styles.text}>To</Text>
-          <View>
-            <TouchableOpacity
-              onPress={() => setDatePickerVisibility(true)}
-              style={styles.date_picker_button}>
-              <Text style={styles.date}>{getDate(toDate)}</Text>
-              <DateTimePickerModal
-                isVisible={isDatePickerVisible}
-                mode="datetime"
-                onConfirm={value => {
-                  setDatePickerVisibility(false);
-                  setToDate(value);
-                }}
-                onCancel={() => setDatePickerVisibility(false)}
-              />
-            </TouchableOpacity>
+          {/* From Date Picker */}
+          <View style={styles.date_picker}>
+            <Text style={styles.text}>From</Text>
+            <View>
+              <TouchableOpacity
+                onPress={() => setFromDatePickerVisibility(true)}
+                style={styles.date_picker_button}>
+                <Text style={styles.date}>{getDate(fromDate)}</Text>
+                <DateTimePickerModal
+                  date={fromDate}
+                  isVisible={isFromDatePickerVisible}
+                  mode="datetime"
+                  onConfirm={value => {
+                    setFromDatePickerVisibility(false);
+                    setFromDate(value);
+                    setToDate(value);
+                  }}
+                  onCancel={() => setFromDatePickerVisibility(false)}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
 
-          <TouchableOpacity
-            color={COLORS.primary}
-            onPress={displayTable}
-            style={styles.button}>
-            <Text style={styles.button_text}>Find</Text>
-          </TouchableOpacity>
+          {/* To Date Picker */}
+          <View style={styles.date_picker}>
+            <Text style={styles.text}>To</Text>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  !toDate && setToDate(new Date());
+                  setToDatePickerVisibility(true);
+                }}
+                style={styles.date_picker_button}>
+                <Text style={styles.date}>
+                  {toDate ? getDate(toDate) : null}
+                </Text>
+                <DateTimePickerModal
+                  date={fromDate}
+                  isVisible={isToDatePickerVisible}
+                  mode="datetime"
+                  onConfirm={value => {
+                    if (value < fromDate) {
+                      showAlert('To Date must larger than From Date');
+                    } else {
+                      setToDate(value);
+                    }
+                    setToDatePickerVisibility(false);
+                  }}
+                  onCancel={() => setToDatePickerVisibility(false)}
+                />
+              </TouchableOpacity>
+            </View>
 
-          {/* Table compoment */}
-          {getTable()}
+            <TouchableOpacity
+              color={COLORS.primary}
+              onPress={displayTable}
+              style={styles.button}>
+              <Text style={styles.button_text}>Find</Text>
+            </TouchableOpacity>
+
+            {/* Table compoment */}
+            {getIndicator()}
+            {getTable()}
+          </View>
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -135,6 +215,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: COLORS.white,
     paddingTop: 20,
+    marginBottom: 50 * ratioHeight,
+  },
+
+  scrollView: {
+    marginBottom: 50,
   },
 
   main_section: {width: 900 * ratioWidth, marginTop: 15},
@@ -147,6 +232,13 @@ const styles = StyleSheet.create({
   text: {
     ...FONTS.h4,
     marginBottom: 5,
+  },
+
+  //Element container
+  element_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginBottom: 15,
   },
 
   date_picker_button: {
@@ -165,8 +257,8 @@ const styles = StyleSheet.create({
     paddingTop: 15,
     backgroundColor: '#fff',
     width: 900 * ratioWidth,
-    height: 750 * ratioHeight,
   },
+
   head: {height: 40, backgroundColor: '#f1f8ff'},
   table_text: {margin: 6, textAlign: 'center'},
   table_head: {

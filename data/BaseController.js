@@ -230,6 +230,40 @@ class BaseController {
     total = total / (queryData.length - countNaN);
     return total;
   }
+
+  //Fetch data for history
+  async fetchHistory(start, end, element) {
+    let url =
+      this.getURL(element) +
+      `?start_time=${start.toISOString()}&end_time=${end.toISOString()}&limit=1000`;
+    let response = await fetch(url);
+    let arr = await response.json();
+    let data = [];
+    arr.map(ele => data.push(this.getValue(ele, element)));
+    return data;
+  }
+  getValue(data, element) {
+    let time = this.getDate(new Date(data.created_at));
+    let unit = element === 0 ? '\u00b0C' : element === 1 ? 'dB' : 'mg/m³';
+    let value = null;
+    try {
+      value = data.value.replace(/'/g, '"');
+      value = JSON.parse(value).data.split('-')[0] + unit;
+    } catch {
+      console.log(data.value);
+    }
+    return [time, value];
+  }
+
+  getDate = date => {
+    let dateString = date.toString();
+    dateString = dateString.split(' ');
+    dateString = dateString.slice(0, 5);
+    dateString[0] = dateString[0] + ',';
+    dateString[3] = dateString[3] + ',';
+
+    return dateString.join(' ');
+  };
 }
 
 export {BaseController};
