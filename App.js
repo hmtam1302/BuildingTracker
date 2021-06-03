@@ -9,6 +9,7 @@ import {
   SendEmail,
   Signup,
   SignupSuccessful,
+  PersonalData,
 } from './screens';
 
 //For testing
@@ -34,13 +35,14 @@ const App = () => {
         initialRouteName={plash ? 'Landing' : 'Home'}>
         <Stack.Screen
           name={plash ? 'Landing' : 'Home'}
-          component={plash ? Landing : Tabs}
+          component={plash ? Landing : PersonalData}
         />
 
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="SendEmail" component={SendEmail} />
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="SignupSuccessful" component={SignupSuccessful} />
+        <Stack.Screen name="PersonalData" component={PersonalData} />
       </Stack.Navigator>
     </NavigationContainer>
   );

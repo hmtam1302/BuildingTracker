@@ -34,6 +34,8 @@ export const ratioWidth = Dimensions.get('window').width / 1080;
 export const ratioHeight = Dimensions.get('window').height / 1920;
 
 export const SIZES = {
+  windowWidth: Dimensions.get('window').width,
+  windowHeight: Dimensions.get('window').height,
   padding: 15,
 };
 

@@ -1,7 +1,11 @@
 const arrow = require('../assets/icons/arrow.png');
 const bell = require('../assets/icons/bell.png');
 const edit = require('../assets/icons/edit.png');
+const close = require('../assets/icons/close.png');
+const danger = require('../assets/icons/danger.png');
+const warning = require('../assets/icons/warning.png');
 const exchange = require('../assets/icons/exchange.png');
+const checkmark = require('../assets/icons/checkmark.png');
 const faq = require('../assets/icons/faq.png');
 const history = require('../assets/icons/history.png');
 const home = require('../assets/icons/home.png');
@@ -58,4 +62,8 @@ export default {
   user_profile,
   message,
   confirm,
+  close,
+  danger,
+  warning,
+  checkmark,
 };

@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
 
 import {COLORS, FONTS, icons, ratioWidth} from '../../constants';
-import Element from './Element';
+import {Element} from './components';
 
 const Settings = ({navigation}) => {
   return (

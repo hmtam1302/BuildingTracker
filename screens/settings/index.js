@@ -1,3 +1,3 @@
 import Settings from './Settings';
-
-export {Settings};
+import PersonalData from './PersonalData';
+export {Settings, PersonalData};
