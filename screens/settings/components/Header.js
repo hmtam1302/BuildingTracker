@@ -1,20 +1,7 @@
 import React from 'react';
-import {
-  View,
-  Image,
-  TouchableOpacity,
-  Text,
-  StyleSheet,
-  Dimensions,
-} from 'react-native';
+import {View, Image, TouchableOpacity, Text, StyleSheet} from 'react-native';
 
-import {
-  COLORS,
-  FONTS,
-  icons,
-  ratioWidth,
-  ratioHeight,
-} from '../../../constants';
+import {COLORS, SIZES, FONTS, icons, ratioWidth} from '../../../constants';
 
 const Header = ({navigation, name}) => {
   return (
@@ -35,7 +22,7 @@ const Header = ({navigation, name}) => {
 
 const styles = StyleSheet.create({
   container: {
-    width: Dimensions.get('window').width,
+    width: SIZES.windowWidth,
     justifyContent: 'center',
     alignItems: 'center',
     flexDirection: 'row',

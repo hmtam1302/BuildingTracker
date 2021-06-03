@@ -10,10 +10,8 @@ import {
   Signup,
   SignupSuccessful,
   PersonalData,
+  Setting,
 } from './screens';
-
-//For testing
-import Test from './screens/Test';
 
 import {Tabs} from './components';
 
@@ -35,7 +33,7 @@ const App = () => {
         initialRouteName={plash ? 'Landing' : 'Home'}>
         <Stack.Screen
           name={plash ? 'Landing' : 'Home'}
-          component={plash ? Landing : PersonalData}
+          component={plash ? Landing : Setting}
         />
 
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -43,6 +41,7 @@ const App = () => {
         <Stack.Screen name="Signup" component={Signup} />
         <Stack.Screen name="SignupSuccessful" component={SignupSuccessful} />
         <Stack.Screen name="PersonalData" component={PersonalData} />
+        <Stack.Screen name="Setting" component={Setting} />
       </Stack.Navigator>
     </NavigationContainer>
   );

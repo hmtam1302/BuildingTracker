@@ -31,10 +31,10 @@ const Settings = ({navigation}) => {
           dest="PersonalData"
         />
         <Element
-          name="Settings"
+          name="Setting"
           icon={icons.settings}
           navigation={navigation}
-          dest="Settings"
+          dest="Setting"
         />
       </View>
 
