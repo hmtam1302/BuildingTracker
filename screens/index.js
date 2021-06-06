@@ -11,6 +11,7 @@ import {
   FAQs,
   AboutUs,
   Feedbacks,
+  Notification,
 } from './settings';
 
 export {
@@ -29,4 +30,5 @@ export {
   FAQs,
   AboutUs,
   Feedbacks,
+  Notification,
 };

@@ -14,6 +14,7 @@ import {
   FAQs,
   AboutUs,
   Feedbacks,
+  Notification,
 } from './screens';
 
 import {Tabs} from './components';
@@ -36,7 +37,7 @@ const App = () => {
         initialRouteName={plash ? 'Landing' : 'Home'}>
         <Stack.Screen
           name={plash ? 'Landing' : 'Home'}
-          component={plash ? Landing : Feedbacks}
+          component={plash ? Landing : Notification}
         />
 
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -48,6 +49,7 @@ const App = () => {
         <Stack.Screen name="FAQs" component={FAQs} />
         <Stack.Screen name="AboutUs" component={AboutUs} />
         <Stack.Screen name="Feedbacks" component={Feedbacks} />
+        <Stack.Screen name="Notification" component={Notification} />
       </Stack.Navigator>
     </NavigationContainer>
   );
