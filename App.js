@@ -11,6 +11,7 @@ import {
   SignupSuccessful,
   PersonalData,
   Setting,
+  FAQs,
 } from './screens';
 
 import {Tabs} from './components';
@@ -33,7 +34,7 @@ const App = () => {
         initialRouteName={plash ? 'Landing' : 'Home'}>
         <Stack.Screen
           name={plash ? 'Landing' : 'Home'}
-          component={plash ? Landing : Setting}
+          component={plash ? Landing : FAQs}
         />
 
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
@@ -42,6 +43,7 @@ const App = () => {
         <Stack.Screen name="SignupSuccessful" component={SignupSuccessful} />
         <Stack.Screen name="PersonalData" component={PersonalData} />
         <Stack.Screen name="Setting" component={Setting} />
+        <Stack.Screen name="FAQs" component={FAQs} />
       </Stack.Navigator>
     </NavigationContainer>
   );

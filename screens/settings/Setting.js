@@ -5,10 +5,10 @@ import {COLORS, SIZES, icons, ratioWidth, ratioHeight} from '../../constants';
 
 import {Header, SettingField} from './components';
 
-const Setting = () => {
+const Setting = ({navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
-      <Header name="Setting" />
+      <Header name="Setting" navigation={navigation} />
 
       {/* Avatar */}
       <Image source={icons.logo} resizeMode="contain" style={styles.logo} />

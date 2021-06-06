@@ -4,7 +4,7 @@ import {Signup, SignupSuccessful} from './signup';
 import {Home} from './home';
 import {Statistics} from './statistics';
 import {History} from './history';
-import {Settings, PersonalData, Setting} from './settings';
+import {Settings, PersonalData, Setting, FAQs} from './settings';
 
 export {
   Landing,
@@ -19,4 +19,5 @@ export {
   Settings,
   PersonalData,
   Setting,
+  FAQs,
 };
