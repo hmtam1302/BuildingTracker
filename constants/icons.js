@@ -6,6 +6,7 @@ const danger = require('../assets/icons/danger.png');
 const warning = require('../assets/icons/warning.png');
 const exchange = require('../assets/icons/exchange.png');
 const checkmark = require('../assets/icons/checkmark.png');
+const hcmut = require('../assets/icons/hcmut.png');
 const faq = require('../assets/icons/faq.png');
 const history = require('../assets/icons/history.png');
 const home = require('../assets/icons/home.png');
@@ -66,4 +67,5 @@ export default {
   danger,
   warning,
   checkmark,
+  hcmut,
 };
