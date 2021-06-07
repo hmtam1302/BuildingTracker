@@ -3,4 +3,5 @@ export const DATA = {
   NOISE_LIMIT: 500,
   GAS_LIMIT: 1,
   TIME_REQUEST: 10,
+  REQUEST_URL: 'https://cse-project-api.herokuapp.com/users/',
 };

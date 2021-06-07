@@ -9,7 +9,7 @@ import {
   ratioHeight,
 } from '../../../constants';
 
-const Input = ({name, value, error, icon, setValue}) => {
+const Input = ({name, value, placeholder, error, icon, setValue}) => {
   return (
     <View style={styles.input_field}>
       <Text style={styles.text}>{name}</Text>
@@ -17,9 +17,10 @@ const Input = ({name, value, error, icon, setValue}) => {
         <Image style={styles.input_icon} resizeMode="contain" source={icon} />
         <TextInput
           style={styles.input_text}
-          placeholder="Username"
+          placeholder={placeholder}
           onChangeText={text => setValue(text)}
           value={value}
+          secureTextEntry={name === 'Password' ? true : false}
         />
       </View>
       <View style={styles.error_wrapper}>

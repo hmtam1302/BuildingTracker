@@ -5,6 +5,7 @@ import {
   Text,
   SafeAreaView,
   TouchableOpacity,
+  ActivityIndicator,
   StyleSheet,
 } from 'react-native';
 
@@ -19,6 +20,7 @@ import {
 } from '../../constants';
 
 import {Input} from './components';
+import {DATA} from '../../data';
 
 const Login = ({navigation}) => {
   const [username, setUsername] = React.useState(null);
@@ -59,6 +61,8 @@ const Login = ({navigation}) => {
     return true;
   };
 
+  const [isIndicatorVisible, setIndicatorVisibility] = React.useState(false);
+
   return (
     <SafeAreaView style={styles.container}>
       {/* Title section */}
@@ -79,12 +83,14 @@ const Login = ({navigation}) => {
       <View style={styles.input_wrapper}>
         <Input
           name="Username"
+          placeholder="Input your username"
           value={username}
           icon={icons.user_profile}
           setValue={setUsername}
         />
         <Input
           name="Password"
+          placeholder="*********"
           value={password}
           icon={icons.key}
           setValue={setPassword}
@@ -100,16 +106,38 @@ const Login = ({navigation}) => {
         {/* Buttons */}
         <TouchableOpacity
           style={styles.button_primary}
-          onPress={() => {
+          onPress={async () => {
             //Check login inputs then navigate to home screen
             let success = validateData();
             if (success) {
-              navigation.navigate('Home');
+              setIndicatorVisibility(true);
+              let response = await fetch(`${DATA.REQUEST_URL}login`, {
+                method: 'POST',
+                headers: {
+                  Accept: 'application/json',
+                  'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                  username: username,
+                  password: password,
+                }),
+              });
+              let data = await response.json();
+              if (data.message === 'Login success!') {
+                navigation.navigate('Home');
+              } else {
+                setError(data.message);
+                setIndicatorVisibility(false);
+              }
             } else {
               return;
             }
           }}>
-          <Text style={styles.text_primary}>Log in</Text>
+          {isIndicatorVisible ? (
+            <ActivityIndicator size="small" color={COLORS.white} />
+          ) : (
+            <Text style={styles.text_primary}>Log in</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button_secondary}
