@@ -34,12 +34,12 @@ const App = () => {
         screenOptions={{
           headerShown: false,
         }}
-        initialRouteName={plash ? 'Landing' : 'Home'}>
+        initialRouteName={plash ? 'Landing' : 'Login'}>
         <Stack.Screen
-          name={plash ? 'Landing' : 'Home'}
-          component={plash ? Landing : Notification}
+          name={plash ? 'Landing' : 'Login'}
+          component={plash ? Landing : Login}
         />
-
+        <Stack.Screen name="Home" component={Tabs} />
         <Stack.Screen name="ForgotPassword" component={ForgotPassword} />
         <Stack.Screen name="SendEmail" component={SendEmail} />
         <Stack.Screen name="Signup" component={Signup} />
