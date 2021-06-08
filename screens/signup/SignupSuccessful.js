@@ -18,7 +18,7 @@ import {
   STYLE,
 } from '../../constants';
 
-const SignupSuccessful = ({navigation}) => {
+const SignupSuccessful = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       {/* Back button */}
@@ -49,7 +49,9 @@ const SignupSuccessful = ({navigation}) => {
           {/* Buttons */}
           <TouchableOpacity
             style={styles.button_primary}
-            onPress={() => navigation.navigate('Home')}>
+            onPress={() =>
+              navigation.navigate('Home', {username: route.params.username})
+            }>
             <Text style={styles.text_primary}>Next</Text>
           </TouchableOpacity>
         </View>

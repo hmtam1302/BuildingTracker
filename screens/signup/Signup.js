@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -19,6 +20,7 @@ import {
 } from '../../constants';
 
 import {Input} from './components';
+import {UserController} from '../../data';
 
 const Signup = ({navigation}) => {
   const [username, setUsername] = React.useState(null);
@@ -29,7 +31,7 @@ const Signup = ({navigation}) => {
   const [passwordError, setPasswordError] = React.useState(null);
   const [confirm, setConfirm] = React.useState(null);
   const [confirmError, setConfirmError] = React.useState(null);
-
+  const [isIndicatorVisible, setIndicatorVisibility] = React.useState(false);
   const validateUsername = () => {
     let re = /^[a-zA-z][A-Za-z0-9]+$/;
     if (!username) {
@@ -81,7 +83,7 @@ const Signup = ({navigation}) => {
   };
 
   const validateConfirm = () => {
-    if (confirm === password) {
+    if (confirm !== password) {
       setConfirmError('Wrong confirm password');
       return false;
     }
@@ -113,18 +115,22 @@ const Signup = ({navigation}) => {
         {/* Username */}
         <Input
           name="Username"
+          placeholder="Username"
           icon={icons.user_profile}
           value={username}
           error={usernameError}
           setValue={setUsername}
+          setError={setUsernameError}
         />
         {/* Email */}
         <Input
           name="Email"
+          placeholder="Email"
           icon={icons.message}
           value={email}
           error={emailError}
-          setValue={setEmailError}
+          setValue={setEmail}
+          setError={setEmailError}
         />
 
         {/* Password */}
@@ -133,29 +139,55 @@ const Signup = ({navigation}) => {
           icon={icons.key}
           value={password}
           error={passwordError}
-          setValue={setPasswordError}
+          placeholder="******"
+          setValue={setPassword}
+          setError={setPasswordError}
+          isSecure={true}
         />
 
         {/* Confirm password */}
         <Input
           name="Confirm password"
+          placeholder="******"
           icon={icons.confirm}
           value={confirm}
           error={confirmError}
-          setValue={setConfirmError}
+          setValue={setConfirm}
+          setError={setConfirmError}
+          isSecure={true}
         />
         {/* Buttons */}
         <TouchableOpacity
           style={styles.button_primary}
-          onPress={() => {
+          onPress={async () => {
             let success = validateData();
             if (success) {
-              navigation.navigate('SignupSuccessful');
+              setIndicatorVisibility(true);
+              let userController = new UserController(username);
+              let response = await userController.signup(
+                username,
+                password,
+                email,
+              );
+              let data = await response.json();
+              console.log(data);
+              if (data.message === 'Signup success!') {
+                navigation.navigate('SignupSuccessful', {
+                  username: username,
+                });
+              } else {
+                setConfirmError(data.message);
+                setIndicatorVisibility(false);
+              }
             } else {
               return;
             }
           }}>
-          <Text style={styles.text_primary}>Sign up</Text>
+          {isIndicatorVisible ? (
+            <ActivityIndicator size="small" color={COLORS.white} />
+          ) : (
+            <Text style={styles.text_primary}>Sign up</Text>
+          )}
         </TouchableOpacity>
         <TouchableOpacity
           style={styles.button_secondary}

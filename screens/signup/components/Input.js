@@ -5,12 +5,20 @@ import {
   FONTS,
   COLORS,
   STYLE,
-  icons,
   ratioWidth,
   ratioHeight,
 } from '../../../constants';
 
-const Input = ({name, value, error, icon, setValue}) => {
+const Input = ({
+  name,
+  value,
+  placeholder,
+  error,
+  icon,
+  setValue,
+  setError,
+  isSecure,
+}) => {
   return (
     <View style={styles.input_field}>
       <Text style={styles.text}>{name}</Text>
@@ -18,9 +26,13 @@ const Input = ({name, value, error, icon, setValue}) => {
         <Image style={styles.input_icon} resizeMode="contain" source={icon} />
         <TextInput
           style={styles.input_text}
-          placeholder="Username"
-          onChangeText={text => setValue(text)}
+          placeholder={placeholder}
+          onChangeText={text => {
+            setError(null);
+            setValue(text);
+          }}
           value={value}
+          secureTextEntry={isSecure}
         />
       </View>
       <View style={styles.error_wrapper}>

@@ -44,6 +44,23 @@ class UserController {
     });
     return response;
   };
+
+  //Signup function
+  signup = async (username, password, email) => {
+    let response = await fetch(`${DATA.REQUEST_URL}signup`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+        email: email,
+      }),
+    });
+    return response;
+  };
 }
 
 export {UserController};
