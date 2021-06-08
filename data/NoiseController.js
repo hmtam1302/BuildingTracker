@@ -1,5 +1,4 @@
 import {BaseController} from './BaseController';
-import {useState} from 'react';
 class NoiseController extends BaseController {
   constructor() {
     super();

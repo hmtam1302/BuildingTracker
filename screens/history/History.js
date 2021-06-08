@@ -19,7 +19,8 @@ import Element from './Element';
 
 import {BaseController} from '../../data';
 
-const History = ({navigation}) => {
+const History = ({route, navigation}) => {
+  const username = route.params.username;
   //Date data
   const [isFromDatePickerVisible, setFromDatePickerVisibility] = useState(
     false,

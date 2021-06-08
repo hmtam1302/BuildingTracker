@@ -4,7 +4,8 @@ import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
 import {COLORS, FONTS, icons, ratioWidth} from '../../constants';
 import {Element} from './components';
 
-const Settings = ({navigation}) => {
+const Settings = ({route, navigation}) => {
+  const username = route.params.username;
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}

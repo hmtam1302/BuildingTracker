@@ -13,7 +13,8 @@ import {
   DATA,
 } from '../../data';
 
-const Home = ({navigation}) => {
+const Home = ({route, navigation}) => {
+  const username = route.params.username;
   //Get status of value
   const getStatus = (value, limit) => {
     if (value / limit < 0.75) {

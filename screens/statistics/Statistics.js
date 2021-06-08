@@ -22,7 +22,8 @@ import {
 
 import {LineChart} from 'react-native-chart-kit';
 
-const Statistics = ({navigation}) => {
+const Statistics = ({route, navigation}) => {
+  const username = route.params.username;
   const [selectedElement, setSelectedElement] = useState(0);
   const [selectedButton, setSelectedButton] = useState(0);
 

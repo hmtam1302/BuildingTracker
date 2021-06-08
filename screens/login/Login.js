@@ -20,7 +20,7 @@ import {
 } from '../../constants';
 
 import {Input} from './components';
-import {DATA} from '../../data';
+import {UserController} from '../../data';
 
 const Login = ({navigation}) => {
   const [username, setUsername] = React.useState(null);
@@ -111,20 +111,11 @@ const Login = ({navigation}) => {
             let success = validateData();
             if (success) {
               setIndicatorVisibility(true);
-              let response = await fetch(`${DATA.REQUEST_URL}login`, {
-                method: 'POST',
-                headers: {
-                  Accept: 'application/json',
-                  'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                  username: username,
-                  password: password,
-                }),
-              });
+              let userController = new UserController(username);
+              let response = await userController.login(username, password);
               let data = await response.json();
               if (data.message === 'Login success!') {
-                navigation.navigate('Home');
+                navigation.navigate('Home', {username: username});
               } else {
                 setError(data.message);
                 setIndicatorVisibility(false);

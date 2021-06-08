@@ -82,7 +82,8 @@ const CustomTabBar = props => {
   }
 };
 
-const Tabs = () => {
+const Tabs = ({route}) => {
+  const username = route.params.username;
   return (
     <Tab.Navigator
       tabBarOptions={{
@@ -101,6 +102,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Home"
         component={Home}
+        initialParams={{username: username}}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
@@ -120,6 +122,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Statistics"
         component={Statistics}
+        initialParams={{username: username}}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
@@ -139,6 +142,7 @@ const Tabs = () => {
       <Tab.Screen
         name="History"
         component={History}
+        initialParams={{username: username}}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
@@ -158,6 +162,7 @@ const Tabs = () => {
       <Tab.Screen
         name="Settings"
         component={Settings}
+        initialParams={{username: username}}
         options={{
           tabBarIcon: ({focused}) => (
             <Image
