@@ -10,9 +10,20 @@ import {
 
 import {COLORS, ratioWidth, ratioHeight, FONTS} from '../../../constants';
 
-const SettingField = ({name, icon, hasIconText = true, hasIcon}) => {
-  const [isEnabled, setIsEnabled] = useState(false);
-  const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+const SettingField = ({
+  name,
+  icon,
+  type,
+  value,
+  sendData,
+  hasIconText = true,
+  hasIcon,
+}) => {
+  const [isEnabled, setIsEnabled] = useState(value);
+  const toggleSwitch = () => {
+    sendData('settings', {[type]: !isEnabled});
+    setIsEnabled(previousState => !previousState);
+  };
 
   return (
     <View style={styles.container}>

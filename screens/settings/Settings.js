@@ -37,6 +37,7 @@ const Settings = ({route, navigation}) => {
           icon={icons.settings}
           navigation={navigation}
           dest="Setting"
+          username={username}
         />
       </View>
 

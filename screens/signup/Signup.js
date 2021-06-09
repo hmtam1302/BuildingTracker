@@ -170,7 +170,6 @@ const Signup = ({navigation}) => {
                 email,
               );
               let data = await response.json();
-              console.log(data);
               if (data.message === 'Signup success!') {
                 navigation.navigate('SignupSuccessful', {
                   username: username,

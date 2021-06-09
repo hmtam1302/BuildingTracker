@@ -14,6 +14,7 @@ import {Header, DataField} from './components';
 import {UserController} from '../../data';
 
 const PersonalData = ({route, navigation}) => {
+  //Get USER DATA
   const [user, setUser] = React.useState(null);
   const [isIndicatorVisible, setIndicatorVisibility] = React.useState(true);
   React.useEffect(() => {
@@ -28,6 +29,7 @@ const PersonalData = ({route, navigation}) => {
     getData();
   }, [route.params.username]);
 
+  //Send USER DATA
   const sendPersonalData = async (type, value) => {
     let response = await new UserController(route.params.username).update(
       type,
