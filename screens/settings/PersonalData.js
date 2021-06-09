@@ -5,46 +5,103 @@ import {
   TouchableOpacity,
   Image,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 
 import {COLORS, SIZES, icons, ratioWidth, ratioHeight} from '../../constants';
 
 import {Header, DataField} from './components';
+import {UserController} from '../../data';
 
-const PersonalData = () => {
+const PersonalData = ({route, navigation}) => {
+  const [user, setUser] = React.useState(null);
+  const [isIndicatorVisible, setIndicatorVisibility] = React.useState(true);
+  React.useEffect(() => {
+    const getData = async () => {
+      const response = await new UserController(
+        route.params.username,
+      ).getData();
+      const data = await response.json();
+      setUser(data);
+      setIndicatorVisibility(false);
+    };
+    getData();
+  }, [route.params.username]);
+
+  const sendPersonalData = async (type, value) => {
+    let response = await new UserController(route.params.username).update(
+      type,
+      value,
+    );
+    let data = response.json();
+    return data;
+  };
+
   return (
     <SafeAreaView style={styles.container}>
-      <Header name="Personal Data" />
+      <Header name="Personal Data" navigation={navigation} />
 
       {/* Avatar */}
-      <View style={styles.avt_container}>
-        <View style={styles.avt_wrapper}>
-          <Image
-            source={icons.programmer}
-            resizeMode="contain"
-            style={styles.avt}
-          />
-        </View>
+      {isIndicatorVisible ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <View style={styles.avt_container}>
+          <View style={styles.avt_wrapper}>
+            <Image
+              source={icons.programmer}
+              resizeMode="contain"
+              style={styles.avt}
+            />
+          </View>
 
-        <TouchableOpacity style={styles.avt_button}>
-          <Image
-            source={icons.picture}
-            resizeMode="contain"
-            style={styles.avt_button_icon}
-          />
-        </TouchableOpacity>
-      </View>
+          <TouchableOpacity style={styles.avt_button}>
+            <Image
+              source={icons.picture}
+              resizeMode="contain"
+              style={styles.avt_button_icon}
+            />
+          </TouchableOpacity>
+        </View>
+      )}
 
       {/* Data fields */}
-      <View style={styles.data_field_container}>
-        <DataField name="Full name" />
-        <DataField name="Email" />
-        <DataField name="Phone" />
-        <DataField name="Birthday" />
-        <DataField name="Password" />
-        <DataField name="Floor" />
-        <DataField name="Role" hasIcon={false} />
-      </View>
+      {isIndicatorVisible ? (
+        <ActivityIndicator size="large" color={COLORS.primary} />
+      ) : (
+        <View style={styles.data_field_container}>
+          <DataField
+            name="Full name"
+            value={user.full_name}
+            type="full_name"
+            sendData={sendPersonalData}
+          />
+          <DataField
+            name="Email"
+            value={user.email}
+            type="email"
+            sendData={sendPersonalData}
+          />
+          <DataField
+            name="Phone"
+            value={user.phone}
+            type="phone"
+            sendData={sendPersonalData}
+          />
+          <DataField
+            name="Birthday"
+            value={user.birthday}
+            type="birthday"
+            sendData={sendPersonalData}
+          />
+          <DataField
+            name="Floor"
+            value={user.floor}
+            type="floor"
+            sendData={sendPersonalData}
+          />
+          <DataField name="Role" hasIcon={false} value={user.role} />
+        </View>
+      )}
     </SafeAreaView>
   );
 };

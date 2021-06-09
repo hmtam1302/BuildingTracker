@@ -8,9 +8,11 @@ import {
   ratioHeight,
 } from '../../../constants';
 
-const Element = ({name, icon, navigation, dest}) => {
+const Element = ({name, icon, navigation, dest, username}) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity
+      style={styles.container}
+      onPress={() => navigation.navigate(dest, {username: username})}>
       <View style={styles.main_group}>
         <View style={styles.icon_wrapper}>
           <Image source={icon} resizeMode="contain" style={styles.icon} />

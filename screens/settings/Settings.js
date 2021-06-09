@@ -30,6 +30,7 @@ const Settings = ({route, navigation}) => {
           icon={icons.user}
           navigation={navigation}
           dest="PersonalData"
+          username={username}
         />
         <Element
           name="Setting"

@@ -1,29 +1,5 @@
 import {DATA} from './Data';
 
-class User {
-  constructor(
-    full_name,
-    email,
-    phone,
-    birthday,
-    avt,
-    role,
-    floor,
-    settings,
-    notifications,
-  ) {
-    this.full_name = full_name;
-    this.email = email;
-    this.phone = phone;
-    this.birthday = birthday;
-    this.avt = avt;
-    this.role = role;
-    this.floor = floor;
-    this.settings = settings;
-    this.notifications = notifications;
-  }
-}
-
 class UserController {
   constructor(username) {
     this.username = username;
@@ -57,6 +33,27 @@ class UserController {
         username: username,
         password: password,
         email: email,
+      }),
+    });
+    return response;
+  };
+
+  //Get user data
+  getData = async () => {
+    let response = await fetch(`${DATA.REQUEST_URL}${this.username}`);
+    return response;
+  };
+
+  //Update user data
+  update = async (type, value) => {
+    let response = await fetch(`${DATA.REQUEST_URL}${this.username}/${type}`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        value: value,
       }),
     });
     return response;
