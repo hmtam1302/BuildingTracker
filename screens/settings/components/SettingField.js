@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import {COLORS, ratioWidth, ratioHeight, FONTS} from '../../../constants';
+import RNRestart from 'react-native-restart';
 
 const SettingField = ({
   name,
@@ -30,7 +31,10 @@ const SettingField = ({
       <Text style={styles.name}>{name}</Text>
       <TouchableOpacity style={styles.button_wrapper}>
         {hasIcon ? (
-          <Image source={icon} resizeMode="contain" style={styles.button} />
+          <TouchableOpacity
+            onPress={() => type === 'log_out' && RNRestart.Restart()}>
+            <Image source={icon} resizeMode="contain" style={styles.button} />
+          </TouchableOpacity>
         ) : (
           <View style={styles.toggle}>
             <Switch

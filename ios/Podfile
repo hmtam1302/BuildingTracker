@@ -12,6 +12,8 @@ target 'BuildingTracker' do
     :hermes_enabled => false
   )
 
+  pod 'react-native-restart', :path => '../node_modules/react-native-restart'
+
   target 'BuildingTrackerTests' do
     inherit! :complete
     # Pods for testing

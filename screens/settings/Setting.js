@@ -74,12 +74,14 @@ const Setting = ({route, navigation}) => {
           <SettingField
             name="Check for update"
             icon={icons.exchange}
+            type="update"
             hasIconText={false}
             hasIcon={true}
           />
           <SettingField
             name="Log out"
             icon={icons.log_out}
+            type="log_out"
             hasIconText={false}
             hasIcon={true}
           />
