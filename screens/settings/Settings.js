@@ -48,18 +48,21 @@ const Settings = ({route, navigation}) => {
           icon={icons.faq}
           navigation={navigation}
           dest="FAQs"
+          username={username}
         />
         <Element
           name="About us"
           icon={icons.info}
           navigation={navigation}
           dest="AboutUs"
+          username={username}
         />
         <Element
           name="Feedbacks"
           icon={icons.love}
           navigation={navigation}
           dest="Feedbacks"
+          username={username}
         />
       </View>
     </SafeAreaView>

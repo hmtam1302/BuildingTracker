@@ -8,8 +8,6 @@ import {
   TextInput,
   TouchableOpacity,
   Modal,
-  Alert,
-  Pressable,
 } from 'react-native';
 
 import {
@@ -23,10 +21,14 @@ import {
 
 import {Header} from './components';
 import {Rating} from 'react-native-ratings';
-const Feedbacks = ({navigation}) => {
-  const ratingCompleted = rating => {
-    console.log('Rating is: ' + rating);
-  };
+import {UserController} from '../../data';
+
+const Feedbacks = ({route, navigation}) => {
+  const [experience, setExperience] = React.useState(null);
+  const [hasError, setHasError] = React.useState(null);
+  const [rating, setRating] = React.useState(3);
+  const ratingCompleted = value => setRating(value);
+
   const [modalVisible, setModalVisible] = useState(false);
 
   return (
@@ -40,11 +42,19 @@ const Feedbacks = ({navigation}) => {
       <View style={styles.feedback_field_container}>
         <View style={styles.input_field}>
           <Text style={styles.heading}>How about using this app?</Text>
-          <TextInput style={styles.text_input} />
+          <TextInput
+            style={styles.text_input}
+            value={experience}
+            onChangeText={value => setExperience(value)}
+          />
         </View>
         <View style={styles.input_field}>
           <Text style={styles.heading}>Does this app have any errors?</Text>
-          <TextInput style={styles.text_input} />
+          <TextInput
+            style={styles.text_input}
+            value={hasError}
+            onChangeText={value => setHasError(value)}
+          />
         </View>
         <Text style={styles.heading}>Your rating</Text>
         <Rating
@@ -56,7 +66,14 @@ const Feedbacks = ({navigation}) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => setModalVisible(!modalVisible)}>
+          onPress={() => {
+            setModalVisible(!modalVisible);
+            new UserController(route.params.username).sendFeedbacks(
+              experience,
+              hasError,
+              rating,
+            );
+          }}>
           <Text style={styles.button_text}>Send</Text>
         </TouchableOpacity>
 
@@ -66,7 +83,6 @@ const Feedbacks = ({navigation}) => {
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert('Modal has been closed.');
             setModalVisible(!modalVisible);
           }}>
           <View style={styles.modal_container}>

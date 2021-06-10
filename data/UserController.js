@@ -58,6 +58,26 @@ class UserController {
     });
     return response;
   };
+
+  //Send feedback
+  sendFeedbacks = async (experience, error, rating) => {
+    let response = await fetch(
+      `${DATA.REQUEST_URL}${this.username}/feedbacks`,
+      {
+        method: 'POST',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          experience: experience,
+          error: error,
+          rating: rating,
+        }),
+      },
+    );
+    return response;
+  };
 }
 
 export {UserController};
