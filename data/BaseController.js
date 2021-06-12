@@ -98,7 +98,7 @@ class BaseController {
       case 2:
         start_time = new Date(date.setDate(1));
         start_time.setHours(0, 0, 0, 0);
-        end_time = date;
+        end_time = new Date();
         break;
     }
     return [start_time, end_time];
@@ -213,6 +213,9 @@ class BaseController {
     }
   }
   getStatisticSummary(start, end, queryData) {
+    if (queryData.length === 0) {
+      return 0;
+    }
     let total = 0;
     let countNaN = 0;
     queryData.map(ele => {
