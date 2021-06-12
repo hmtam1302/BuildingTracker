@@ -6,6 +6,7 @@ import AboutUs from './AboutUs';
 import Feedbacks from './Feedbacks';
 import Notification from './Notification';
 import ChangePassword from './ChangePassword';
+import ChangeLimit from './ChangeLimit';
 
 export {
   Settings,
@@ -16,4 +17,5 @@ export {
   Feedbacks,
   Notification,
   ChangePassword,
+  ChangeLimit,
 };

@@ -13,6 +13,7 @@ import {
   Feedbacks,
   Notification,
   ChangePassword,
+  ChangeLimit,
 } from './settings';
 
 export {
@@ -33,4 +34,5 @@ export {
   Feedbacks,
   Notification,
   ChangePassword,
+  ChangeLimit,
 };

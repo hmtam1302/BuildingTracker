@@ -19,6 +19,30 @@ class SystemController {
     });
     return response;
   };
+
+  //Get system limits
+  getValue = async () => {
+    let response = await fetch(this.url);
+    return response;
+  };
+
+  //Update system limits
+  updateValue = async (username, temperature, noise, gas) => {
+    let response = await fetch(this.url + 'changelimit', {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: username,
+        temperature: temperature,
+        noise: noise,
+        gas: gas,
+      }),
+    });
+    return response;
+  };
 }
 
 export {SystemController};

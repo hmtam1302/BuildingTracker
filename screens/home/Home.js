@@ -34,10 +34,9 @@ const Home = ({route, navigation}) => {
     Alert.alert('Danger', `${type} is dangerous`, [
       {
         text: 'Cancel',
-        onPress: () => console.log('Cancel Pressed'),
         style: 'cancel',
       },
-      {text: 'OK', onPress: () => console.log('OK Pressed')},
+      {text: 'OK'},
     ]);
   };
   //Get status of value

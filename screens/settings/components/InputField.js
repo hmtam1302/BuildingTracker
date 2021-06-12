@@ -1,24 +1,15 @@
-import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from 'react-native';
+import React from 'react';
+import {View, Text, TextInput, StyleSheet} from 'react-native';
 
 import {
   COLORS,
   SIZES,
-  icons,
   ratioWidth,
   ratioHeight,
   FONTS,
 } from '../../../constants';
 
-const InputField = ({name, onSetValue, isSecure = false}) => {
-  const [data, setData] = useState(null);
+const InputField = ({name, onSetValue, isSecure = false, placeholder}) => {
   const styles = StyleSheet.create({
     container: {
       justifyContent: 'space-between',
@@ -62,6 +53,7 @@ const InputField = ({name, onSetValue, isSecure = false}) => {
           style={styles.input}
           secureTextEntry={isSecure}
           onChangeText={text => onSetValue(text)}
+          placeholder={placeholder ? 'Current value: ' + placeholder : ''}
         />
       </View>
     </View>

@@ -18,6 +18,7 @@ const PersonalData = ({route, navigation}) => {
   //Get USER DATA
   const [user, setUser] = React.useState(null);
   const [isIndicatorVisible, setIndicatorVisibility] = React.useState(true);
+
   React.useEffect(() => {
     const getData = async () => {
       const response = await new UserController(
@@ -113,9 +114,17 @@ const PersonalData = ({route, navigation}) => {
               }>
               <Text style={styles.button_text}>Change password</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles.button}>
-              <Text style={styles.button_text}>Change limit</Text>
-            </TouchableOpacity>
+            {user.role === 'admin' && (
+              <TouchableOpacity
+                style={styles.button}
+                onPress={() =>
+                  navigation.navigate('ChangeLimit', {
+                    username: route.params.username,
+                  })
+                }>
+                <Text style={styles.button_text}>Change limit</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
       )}

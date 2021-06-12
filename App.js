@@ -16,6 +16,7 @@ import {
   Feedbacks,
   Notification,
   ChangePassword,
+  ChangeLimit,
 } from './screens';
 
 import {Tabs} from './components';
@@ -52,6 +53,7 @@ const App = () => {
         <Stack.Screen name="Feedbacks" component={Feedbacks} />
         <Stack.Screen name="Notification" component={Notification} />
         <Stack.Screen name="ChangePassword" component={ChangePassword} />
+        <Stack.Screen name="ChangeLimit" component={ChangeLimit} />
       </Stack.Navigator>
     </NavigationContainer>
   );
