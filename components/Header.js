@@ -101,7 +101,11 @@ const Header = ({username, navigation, hasNotificationButton = true}) => {
         {/* User section */}
         <View style={styles.user_section}>
           <View style={styles.icon_section}>
-            <TouchableOpacity style={styles.icon}>
+            <TouchableOpacity
+              style={styles.icon}
+              onPress={() =>
+                navigation.navigate('PersonalData', {username: username})
+              }>
               <Image
                 source={icons.programmer}
                 resizeMode="contain"
