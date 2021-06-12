@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   StyleSheet,
   SafeAreaView,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -19,9 +20,12 @@ import {
   STYLE,
 } from '../../constants';
 
+import {SystemController} from '../../data';
+
 const ForgotPassword = ({navigation}) => {
   const [email, setEmail] = React.useState(null);
   const [error, setError] = React.useState(null);
+  const [isIndicatorVisible, setIndicatorVisibility] = React.useState(false);
 
   const validateData = () => {
     const re = /^(([^<>()[\].,;:\s@"]+(\.[^<>()[\].,;:\s@"]+)*)|(".+"))@(([^<>()[\].,;:\s@"]+\.)+[^<>()[\].,;:\s@"]{2,})$/i;
@@ -75,7 +79,7 @@ const ForgotPassword = ({navigation}) => {
               />
               <TextInput
                 style={styles.input_text}
-                placeholder="Username"
+                placeholder="Email"
                 onChangeText={text => setEmail(text)}
               />
             </View>
@@ -88,21 +92,35 @@ const ForgotPassword = ({navigation}) => {
         {/* Buttons */}
         <TouchableOpacity
           style={styles.button_primary}
-          onPress={() => {
+          onPress={async () => {
+            setIndicatorVisibility(true);
+            setError(null);
             let success = validateData();
             if (success) {
-              navigation.navigate('SendEmail', {email: email});
-            } else {
-              return;
+              let response = await new SystemController().forgotPassword(email);
+              let data = await response.json();
+              if (data.message === 'Send password success!') {
+                navigation.navigate('SendEmail', {email: email});
+              } else {
+                setError(data.message);
+              }
             }
+            setIndicatorVisibility(false);
           }}>
-          <Text style={styles.text_primary}>Send</Text>
-          <Image
-            source={icons.paper_plane}
-            resizeMode="contain"
-            style={styles.button_icon}
-          />
+          {isIndicatorVisible ? (
+            <ActivityIndicator size="small" color={COLORS.white} />
+          ) : (
+            <View style={styles.button_container}>
+              <Text style={styles.text_primary}>Send</Text>
+              <Image
+                source={icons.paper_plane}
+                resizeMode="contain"
+                style={styles.button_icon}
+              />
+            </View>
+          )}
         </TouchableOpacity>
+
         <View style={styles.link_wrapper}>
           <Text style={styles.additional_text}>Remember password?</Text>
           <TouchableOpacity onPress={() => navigation.navigate('Login')}>
@@ -211,6 +229,11 @@ const styles = StyleSheet.create({
   error_text: {
     ...FONTS.h5,
     ...FONTS.error,
+  },
+  button_container: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   button_primary: {
     width: 700 * ratioWidth,

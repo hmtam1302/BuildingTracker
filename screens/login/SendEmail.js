@@ -6,6 +6,7 @@ import {
   SafeAreaView,
   TouchableOpacity,
   StyleSheet,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -17,12 +18,14 @@ import {
   FONTS,
   STYLE,
 } from '../../constants';
+import {SystemController} from '../../data';
 
-const ForgotPassword = ({navigation, route}) => {
-  const [email, setEmail] = React.useState(route.params.email);
-
-  const resendEmail = () => {
-    console.log(email);
+const SendEmail = ({navigation, route}) => {
+  const [isIndicatorVisible, setIndicatorVisibility] = React.useState(false);
+  const resendEmail = async () => {
+    setIndicatorVisibility(true);
+    await new SystemController().forgotPassword(route.params.email);
+    setIndicatorVisibility(false);
   };
 
   return (
@@ -62,9 +65,13 @@ const ForgotPassword = ({navigation, route}) => {
             <Text style={styles.additional_text}>
               Didn't receive any thing?
             </Text>
-            <TouchableOpacity onPress={() => resendEmail()}>
-              <Text style={styles.link_text}>Resend</Text>
-            </TouchableOpacity>
+            {isIndicatorVisible ? (
+              <ActivityIndicator size="small" color={COLORS.primary} />
+            ) : (
+              <TouchableOpacity onPress={async () => await resendEmail()}>
+                <Text style={styles.link_text}>Resend</Text>
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         {/* Image section */}
@@ -221,4 +228,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default ForgotPassword;
+export default SendEmail;

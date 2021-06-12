@@ -4,6 +4,7 @@ import {NoiseController} from './NoiseController';
 import {GasController} from './GasController';
 import {DATA} from './Data';
 import {UserController} from './UserController';
+import {SystemController} from './SystemController';
 
 export {
   BaseController,
@@ -12,4 +13,5 @@ export {
   NoiseController,
   DATA,
   UserController,
+  SystemController,
 };

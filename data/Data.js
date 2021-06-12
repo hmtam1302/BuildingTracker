@@ -4,4 +4,5 @@ export const DATA = {
   GAS_LIMIT: 1,
   TIME_REQUEST: 10,
   REQUEST_URL: 'https://cse-project-api.herokuapp.com/users/',
+  SYSTEM_URL: 'https://cse-project-api.herokuapp.com/system/',
 };
