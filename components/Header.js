@@ -4,7 +4,7 @@ import {icons, ratioWidth, ratioHeight, COLORS, FONTS} from '../constants';
 import DropDownPicker from 'react-native-dropdown-picker';
 import {UserController} from '../data';
 
-const Header = ({username, navigation}) => {
+const Header = ({username, navigation, hasNotificationButton = true}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -117,21 +117,23 @@ const Header = ({username, navigation}) => {
           </View>
         </View>
         {/* Notification section */}
-        <View>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Notification', {username: username})
-            }>
-            <Image
-              source={icons.bell}
-              resizeMode="contain"
-              style={[
-                styles.noti_icon,
-                hasNotification && styles.icon_has_noti,
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+        {hasNotificationButton && (
+          <View>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Notification', {username: username})
+              }>
+              <Image
+                source={icons.bell}
+                resizeMode="contain"
+                style={[
+                  styles.noti_icon,
+                  hasNotification && styles.icon_has_noti,
+                ]}
+              />
+            </TouchableOpacity>
+          </View>
+        )}
       </View>
       <View style={styles.floor_container}>
         <Text style={styles.floor_text}>Floor</Text>

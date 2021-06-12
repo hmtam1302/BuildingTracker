@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, StyleSheet} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Alert} from 'react-native';
 import {icons, COLORS} from '../../constants';
 
 import Element from './Element';
@@ -30,6 +30,16 @@ const Home = ({route, navigation}) => {
   };
 
   const username = route.params.username;
+  const createAlert = type => {
+    Alert.alert('Danger', `${type} is dangerous`, [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => console.log('OK Pressed')},
+    ]);
+  };
   //Get status of value
   const getStatus = (value, limit, type) => {
     if (value / limit < 0.75) {
@@ -51,6 +61,7 @@ const Home = ({route, navigation}) => {
         type,
         getCurrent(),
       );
+      createAlert(type);
       return 'Danger';
     }
   };

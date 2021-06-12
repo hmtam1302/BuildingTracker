@@ -97,7 +97,7 @@ const History = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header hasNotificationButton={false} />
       {/* Main section */}
       <ScrollView style={styles.scrollView}>
         <View style={styles.main_section}>

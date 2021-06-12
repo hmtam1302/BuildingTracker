@@ -7,7 +7,8 @@ import {
   StyleSheet,
   TextInput,
   TouchableOpacity,
-  Modal,
+  Alert,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -29,7 +30,13 @@ const Feedbacks = ({route, navigation}) => {
   const [rating, setRating] = React.useState(3);
   const ratingCompleted = value => setRating(value);
 
-  const [modalVisible, setModalVisible] = useState(false);
+  const [isIndicatorVisible, setIndicatorVisibility] = useState(false);
+
+  const createAlert = () => {
+    Alert.alert('Success', 'Your feedback has been sent!', [
+      {text: 'Thank you'},
+    ]);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -66,38 +73,22 @@ const Feedbacks = ({route, navigation}) => {
         />
         <TouchableOpacity
           style={styles.button}
-          onPress={() => {
-            setModalVisible(!modalVisible);
-            new UserController(route.params.username).sendFeedbacks(
+          onPress={async () => {
+            setIndicatorVisibility(true);
+            await new UserController(route.params.username).sendFeedbacks(
               experience,
               hasError,
               rating,
             );
+            setIndicatorVisibility(false);
+            createAlert();
           }}>
-          <Text style={styles.button_text}>Send</Text>
+          {isIndicatorVisible ? (
+            <ActivityIndicator size="small" color={COLORS.white} />
+          ) : (
+            <Text style={styles.button_text}>Send</Text>
+          )}
         </TouchableOpacity>
-
-        {/* Modal */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            setModalVisible(!modalVisible);
-          }}>
-          <View style={styles.modal_container}>
-            <View style={styles.modal_view}>
-              <Text style={styles.modal_text}>
-                Your feedback has been sent!
-              </Text>
-              <TouchableOpacity
-                style={styles.button}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.modal_button_text}>Thank you</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
       </View>
     </SafeAreaView>
   );
@@ -149,42 +140,6 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   button_text: {
-    color: COLORS.white,
-    ...FONTS.h3,
-  },
-
-  //Modal
-  modal_container: {
-    position: 'absolute',
-    top: SIZES.windowHeight / 2 - (500 / 2) * ratioHeight,
-    left: SIZES.windowWidth / 2 - (800 / 2) * ratioWidth,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: COLORS.white,
-    width: 800 * ratioWidth,
-    height: 500 * ratioHeight,
-    padding: 10,
-    borderRadius: 25 * ratioWidth,
-    borderWidth: 1,
-    borderColor: COLORS.primary,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  modal_text: {
-    ...FONTS.h3,
-    color: COLORS.heading,
-  },
-  modal_button: {
-    width: 500 * ratioWidth,
-    height: 125 * ratioHeight,
-  },
-  modal_button_text: {
     color: COLORS.white,
     ...FONTS.h3,
   },
