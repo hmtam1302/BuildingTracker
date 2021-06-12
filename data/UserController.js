@@ -59,6 +59,23 @@ class UserController {
     return response;
   };
 
+  //Change password
+  changePassword = async (oldPassword, newPassword) => {
+    let response = await fetch(`${DATA.REQUEST_URL}changepassword`, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        username: this.username,
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+      }),
+    });
+    return response;
+  };
+
   //Send feedback
   sendFeedbacks = async (experience, error, rating) => {
     let response = await fetch(

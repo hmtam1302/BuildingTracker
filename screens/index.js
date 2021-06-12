@@ -12,6 +12,7 @@ import {
   AboutUs,
   Feedbacks,
   Notification,
+  ChangePassword,
 } from './settings';
 
 export {
@@ -31,4 +32,5 @@ export {
   AboutUs,
   Feedbacks,
   Notification,
+  ChangePassword,
 };

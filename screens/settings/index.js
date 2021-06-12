@@ -5,6 +5,7 @@ import FAQs from './FAQs';
 import AboutUs from './AboutUs';
 import Feedbacks from './Feedbacks';
 import Notification from './Notification';
+import ChangePassword from './ChangePassword';
 
 export {
   Settings,
@@ -14,4 +15,5 @@ export {
   AboutUs,
   Feedbacks,
   Notification,
+  ChangePassword,
 };

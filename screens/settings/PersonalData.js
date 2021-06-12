@@ -6,6 +6,7 @@ import {
   Image,
   StyleSheet,
   ActivityIndicator,
+  Text,
 } from 'react-native';
 
 import {COLORS, SIZES, icons, ratioWidth, ratioHeight} from '../../constants';
@@ -102,6 +103,20 @@ const PersonalData = ({route, navigation}) => {
             sendData={sendPersonalData}
           />
           <DataField name="Role" hasIcon={false} value={user.role} />
+          <View style={styles.button_container}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() =>
+                navigation.navigate('ChangePassword', {
+                  username: route.params.username,
+                })
+              }>
+              <Text style={styles.button_text}>Change password</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.button}>
+              <Text style={styles.button_text}>Change limit</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       )}
     </SafeAreaView>
@@ -147,6 +162,25 @@ const styles = StyleSheet.create({
   //Data fields
   data_field_container: {
     width: SIZES.windowWidth - 20 * 2,
+  },
+
+  //Button field
+  button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    marginTop: 10,
+  },
+  button: {
+    width: 400 * ratioWidth,
+    height: 125 * ratioHeight,
+    backgroundColor: COLORS.primary,
+    borderRadius: 25 * ratioWidth,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button_text: {
+    color: COLORS.white,
+    fontFamily: 'Roboto-Regular',
   },
 });
 
