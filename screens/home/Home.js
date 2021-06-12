@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
 import {View, SafeAreaView, StyleSheet} from 'react-native';
 import {icons, COLORS} from '../../constants';
@@ -11,20 +12,45 @@ import {
   NoiseController,
   GasController,
   DATA,
+  UserController,
 } from '../../data';
 
 const Home = ({route, navigation}) => {
+  //Get current time
+  const getCurrent = () => {
+    let current = new Date();
+    let year = current.getFullYear();
+    let month = current.getMonth() + 1;
+    let date = current.getDate();
+
+    let hour = current.getHours();
+    let minute = current.getMinutes();
+    let second = current.getSeconds();
+    return `${hour}:${minute}${second} ${date}-${month}-${year}`;
+  };
+
   const username = route.params.username;
   //Get status of value
-  const getStatus = (value, limit) => {
+  const getStatus = (value, limit, type) => {
     if (value / limit < 0.75) {
       return 'Normal';
     } else if (value / limit >= 0.75 && value / limit < 0.9) {
+      //Send notification
+      new UserController(username).sendNotification(
+        'Warning',
+        type,
+        getCurrent(),
+      );
       return 'Alert';
     } else {
       //Send data to speaker
       let controller = new BaseController();
       controller.sendFeedData('100');
+      new UserController(username).sendNotification(
+        'Danger',
+        type,
+        getCurrent(),
+      );
       return 'Danger';
     }
   };
@@ -54,7 +80,7 @@ const Home = ({route, navigation}) => {
       setTemp({
         limit: DATA.TEMP_LIMIT,
         current: obj.split('-')[0],
-        status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT),
+        status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT, 'Temperature'),
         detail: 'None',
       });
     });
@@ -64,7 +90,7 @@ const Home = ({route, navigation}) => {
         setTemp({
           limit: DATA.TEMP_LIMIT,
           current: obj.split('-')[0],
-          status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT),
+          status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT, 'Temperature'),
           detail: 'None',
         });
       });
@@ -80,7 +106,6 @@ const Home = ({route, navigation}) => {
     status: 'Normal',
     detail: 'None',
   });
-
   useEffect(() => {
     const noiseController = new NoiseController();
     noiseController.fetchFeedData().then(res => {
@@ -88,7 +113,7 @@ const Home = ({route, navigation}) => {
       setNoise({
         limit: DATA.NOISE_LIMIT,
         current: obj,
-        status: getStatus(obj, DATA.NOISE_LIMIT),
+        status: getStatus(obj, DATA.NOISE_LIMIT, 'Noise'),
         detail: 'None',
       });
     });
@@ -98,7 +123,7 @@ const Home = ({route, navigation}) => {
         setNoise({
           limit: DATA.NOISE_LIMIT,
           current: obj,
-          status: getStatus(obj, DATA.NOISE_LIMIT),
+          status: getStatus(obj, DATA.NOISE_LIMIT, 'Noise'),
           detail: 'None',
         });
       });
@@ -114,7 +139,6 @@ const Home = ({route, navigation}) => {
     status: 'Normal',
     detail: 'None',
   });
-
   useEffect(() => {
     const gasController = new GasController();
     gasController.fetchFeedData().then(res => {
@@ -122,7 +146,7 @@ const Home = ({route, navigation}) => {
       setGas({
         limit: DATA.GAS_LIMIT,
         current: obj,
-        status: getStatus(obj, DATA.GAS_LIMIT),
+        status: getStatus(obj, DATA.GAS_LIMIT, 'Gas'),
         detail: 'None',
       });
     });
@@ -132,7 +156,7 @@ const Home = ({route, navigation}) => {
         setGas({
           limit: DATA.GAS_LIMIT,
           current: obj,
-          status: getStatus(obj, DATA.GAS_LIMIT),
+          status: getStatus(obj, DATA.GAS_LIMIT, 'Gas'),
           detail: 'None',
         });
       });
@@ -143,7 +167,7 @@ const Home = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header />
+      <Header username={username} navigation={navigation} />
       {/* Main section */}
       <View style={styles.main_section}>
         <View style={styles.element}>

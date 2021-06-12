@@ -10,10 +10,18 @@ import {
   ratioHeight,
 } from '../../../constants';
 
-const NotificationField = ({type, detail, time, status}) => {
+const NotificationField = ({
+  id,
+  status,
+  element,
+  time,
+  isRead,
+  onMarkAsRead,
+  onDelete,
+}) => {
   const styles = StyleSheet.create({
     container: {
-      backgroundColor: status ? COLORS.white : COLORS.grey,
+      backgroundColor: isRead ? COLORS.white : COLORS.grey,
       width: SIZES.windowWidth - 20 * 2,
       borderRadius: 25 * ratioWidth,
       borderColor: COLORS.grey,
@@ -58,20 +66,22 @@ const NotificationField = ({type, detail, time, status}) => {
   });
 
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={() => onMarkAsRead(id)}>
       <Image
-        source={type === 'Warning' ? icons.warning : icons.danger}
+        source={status === 'Warning' ? icons.warning : icons.danger}
         resizeMode="contain"
         style={styles.icon}
       />
       <View style={styles.detail_container}>
         <View style={styles.header_container}>
-          <Text style={styles.heading}>{type}: </Text>
-          <Text style={styles.detail}>{detail}!</Text>
+          <Text style={styles.heading}>{status}: </Text>
+          <Text style={styles.detail}>
+            {`${element} is ${status === 'Warning' ? 'high' : 'dangerous'}`}!
+          </Text>
         </View>
         <Text style={styles.time}>{time}</Text>
       </View>
-      <TouchableOpacity>
+      <TouchableOpacity onPress={() => onDelete(id)}>
         <Image
           style={styles.close_button}
           resizeMode="contain"

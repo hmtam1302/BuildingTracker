@@ -1,19 +1,64 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   SafeAreaView,
   View,
   Image,
   TouchableOpacity,
   Text,
-  ScrollView,
   StyleSheet,
+  ActivityIndicator,
+  FlatList,
 } from 'react-native';
 
 import {COLORS, SIZES, icons, ratioWidth, ratioHeight} from '../../constants';
 
 import {Header, NotificationField} from './components';
+import {UserController} from '../../data';
 
-const Notification = ({navigation}) => {
+const Notification = ({route, navigation, status, element, time, isRead}) => {
+  const username = route.params.username;
+  const [isIndicatorVisible, setIndicatorVisibility] = useState(true);
+  const [notifications, setNotifications] = useState(null);
+  //Get notifications data
+  React.useEffect(() => {
+    const getNotifications = async () => {
+      let response = await new UserController(username).getNotifications();
+      let data = await response.json();
+      if (data.hasOwnProperty('notifications')) {
+        setNotifications(data.notifications);
+      }
+      setIndicatorVisibility(false);
+    };
+    getNotifications();
+  }, [username]);
+
+  //Mark notification as read
+  const markAsRead = id => {
+    new UserController(username).updateNotification(id);
+    setNotifications(
+      notifications.map(ele => (ele._id === id ? {...ele, isRead: true} : ele)),
+    );
+  };
+
+  //Delete notification
+  const deleteNotification = id => {
+    new UserController(username).deleteNotification(id);
+    setNotifications(notifications.filter(ele => ele._id !== id));
+  };
+
+  //Mark all as read
+  const markAllAsRead = () => {
+    setNotifications(
+      notifications.map(ele => {
+        if (!ele.isRead) {
+          new UserController(username).updateNotification(ele._id);
+          return {...ele, isRead: true};
+        } else {
+          return ele;
+        }
+      }),
+    );
+  };
   return (
     <SafeAreaView style={styles.container}>
       <Header name="Notification" navigation={navigation} />
@@ -22,31 +67,31 @@ const Notification = ({navigation}) => {
       <Image source={icons.logo} resizeMode="contain" style={styles.logo} />
 
       {/* Notification fields */}
-      <View style={styles.notification_field_container}>
-        <TouchableOpacity style={styles.button}>
+      <View style={styles.notification_container}>
+        <TouchableOpacity style={styles.button} onPress={() => markAllAsRead()}>
           <Text style={styles.button_text}>Mark all as read</Text>
         </TouchableOpacity>
-
-        <ScrollView style={styles.notification_container}>
-          <NotificationField
-            type="Warning"
-            detail="Temperature is high"
-            time="18:30 - 02/06/2021"
-            status={false}
-          />
-          <NotificationField
-            type="Warning"
-            detail="Temperature is high"
-            time="18:30 - 02/06/2021"
-            status={false}
-          />
-          <NotificationField
-            type="Danger"
-            detail="Temperature is dangerous"
-            time="18:30 - 02/06/2021"
-            status={true}
-          />
-        </ScrollView>
+        {isIndicatorVisible ? (
+          <ActivityIndicator size="large" color={COLORS.primary} />
+        ) : (
+          <View style={styles.notification_field_container}>
+            <FlatList
+              data={notifications}
+              renderItem={({item}) => (
+                <NotificationField
+                  id={item._id}
+                  status={item.status}
+                  element={item.element}
+                  time={item.time}
+                  onMarkAsRead={markAsRead}
+                  isRead={item.isRead}
+                  onDelete={deleteNotification}
+                />
+              )}
+              keyExtractor={item => item._id}
+            />
+          </View>
+        )}
       </View>
     </SafeAreaView>
   );
@@ -65,13 +110,22 @@ const styles = StyleSheet.create({
     height: 256 * ratioHeight,
   },
 
-  //Data fields
-  notification_field_container: {
+  //Notification fields
+  notification_container: {
     width: SIZES.windowWidth - 20 * 2,
-    alignItems: 'flex-end',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+
+  notification_field_container: {
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 
   //Button
+  button: {
+    alignSelf: 'flex-end',
+  },
   button_text: {
     fontSize: 30 * ratioHeight,
     fontFamily: 'Roboto-Bold',

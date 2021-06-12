@@ -2,8 +2,9 @@ import React, {useState} from 'react';
 import {View, Text, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import {icons, ratioWidth, ratioHeight, COLORS, FONTS} from '../constants';
 import DropDownPicker from 'react-native-dropdown-picker';
+import {UserController} from '../data';
 
-const Header = () => {
+const Header = ({username, navigation}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -13,10 +14,18 @@ const Header = () => {
   ]);
 
   const [hasNotification, setHasNotification] = useState(false);
-  // useEffect(() => {
-  //   const controller = new BaseController();
-  //   controller.getNotifications()
-  // })
+  React.useEffect(() => {
+    const getNotifications = async () => {
+      let response = await new UserController(username).getNotifications();
+      let data = await response.json();
+      if (data.hasOwnProperty('notifications')) {
+        setHasNotification(true);
+      } else {
+        setHasNotification(false);
+      }
+    };
+    getNotifications();
+  }, [username]);
 
   const styles = StyleSheet.create({
     // Header
@@ -58,6 +67,9 @@ const Header = () => {
     noti_icon: {
       width: 64 * ratioWidth,
       height: 64 * ratioHeight,
+    },
+    icon_has_noti: {
+      tintColor: COLORS.primary,
     },
 
     // Floor
@@ -106,11 +118,17 @@ const Header = () => {
         </View>
         {/* Notification section */}
         <View>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate('Notification', {username: username})
+            }>
             <Image
               source={icons.bell}
               resizeMode="contain"
-              style={styles.noti_icon}
+              style={[
+                styles.noti_icon,
+                hasNotification && styles.icon_has_noti,
+              ]}
             />
           </TouchableOpacity>
         </View>

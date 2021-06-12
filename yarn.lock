@@ -5784,11 +5784,6 @@ react-native-modal-datetime-picker@^9.2.3:
   dependencies:
     prop-types "^15.7.2"
 
-react-native-notifications@^3.4.2:
-  version "3.4.2"
-  resolved "https://registry.yarnpkg.com/react-native-notifications/-/react-native-notifications-3.4.2.tgz#5742a07eb62f61668df0ab8e1c97d470f3101e58"
-  integrity sha512-kJL3fDQu2LaCmz94dpUjWbpXSTwoouHCNpYQgIwNDL4H4lp7h5TNnfoo0owwA0CSz9E1egWz9o3CioM/unZw/w==
-
 react-native-progress@^4.1.2:
   version "4.1.2"
   resolved "https://registry.yarnpkg.com/react-native-progress/-/react-native-progress-4.1.2.tgz#ffb2264ddfeba409c730e36a9791bb7bbe07a00d"
@@ -5796,11 +5791,6 @@ react-native-progress@^4.1.2:
   dependencies:
     "@react-native-community/art" "^1.1.2"
     prop-types "^15.7.2"
-
-react-native-push-notification@^7.3.1:
-  version "7.3.1"
-  resolved "https://registry.yarnpkg.com/react-native-push-notification/-/react-native-push-notification-7.3.1.tgz#1495feacd25169b998446dcf7b448a197ae5dca0"
-  integrity sha512-5kSKPvDU23uZRmzgKTsGhbwGNvB2tidu1VnInBHP53ZD0VEPSBl5fbpuTfHH98ED+Gp1SCcT2/e6bJWkIspKvg==
 
 react-native-ratings@^8.1.0:
   version "8.1.0"
