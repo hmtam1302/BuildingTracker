@@ -6,6 +6,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Alert,
 } from 'react-native';
 
 import {COLORS, ratioWidth, ratioHeight, FONTS} from '../../../constants';
@@ -32,7 +33,19 @@ const SettingField = ({
       <TouchableOpacity style={styles.button_wrapper}>
         {hasIcon ? (
           <TouchableOpacity
-            onPress={() => type === 'log_out' && RNRestart.Restart()}>
+            onPress={() => {
+              if (type === 'log_out') {
+                Alert.alert('Alert', 'Wanna log out?', [
+                  {
+                    text: 'Cancel',
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => RNRestart.Restart()},
+                ]);
+              } else {
+                Alert.alert('Success', 'The latest version!', [{text: 'OK'}]);
+              }
+            }}>
             <Image source={icon} resizeMode="contain" style={styles.button} />
           </TouchableOpacity>
         ) : (
