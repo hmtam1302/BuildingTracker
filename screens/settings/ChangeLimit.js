@@ -32,7 +32,6 @@ const ChangeLimit = ({route, navigation}) => {
   //Get current value
   React.useEffect(() => {
     const getValue = async () => {
-      console.log('Data');
       let response = await new SystemController().getValue();
       let data = response.system;
       setTemperature(data.temperature);

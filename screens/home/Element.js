@@ -7,7 +7,6 @@ import * as Progress from 'react-native-progress';
 const Element = ({name, color, icon, value}) => {
   const unit =
     name === 'Temperature' ? '\u00b0C' : name === 'Noise' ? 'dB' : 'mg/m³';
-  console.log(value);
   const styles = StyleSheet.create({
     container: {
       marginVertical: 45 * ratioHeight,

@@ -7,6 +7,7 @@ import {UserController} from '../data';
 const Header = ({username, navigation, hasNotificationButton = true}) => {
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [fullname, setFullName] = useState('User');
   const [items, setItems] = useState([
     {label: 'Ground', value: '0'},
     {label: '1', value: '1'},
@@ -24,7 +25,13 @@ const Header = ({username, navigation, hasNotificationButton = true}) => {
         setHasNotification(false);
       }
     };
+    const getUserFullname = async () => {
+      let response = await new UserController(username).getData();
+      let data = await response.json();
+      setFullName(data.full_name);
+    };
     getNotifications();
+    getUserFullname();
   }, [username]);
 
   const styles = StyleSheet.create({
@@ -114,7 +121,9 @@ const Header = ({username, navigation, hasNotificationButton = true}) => {
             </TouchableOpacity>
           </View>
           <View style={styles.greeting}>
-            <Text style={styles.main_text}>Hi, User</Text>
+            <Text style={styles.main_text}>
+              Hi, {fullname ? fullname : 'User'}
+            </Text>
             <Text style={styles.secondary_text}>
               Building tracker is running now!
             </Text>

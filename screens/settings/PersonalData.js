@@ -57,14 +57,6 @@ const PersonalData = ({route, navigation}) => {
               style={styles.avt}
             />
           </View>
-
-          <TouchableOpacity style={styles.avt_button}>
-            <Image
-              source={icons.picture}
-              resizeMode="contain"
-              style={styles.avt_button_icon}
-            />
-          </TouchableOpacity>
         </View>
       )}
 
@@ -145,27 +137,12 @@ const styles = StyleSheet.create({
     height: 332 * ratioHeight,
   },
   avt_wrapper: {
-    borderTopLeftRadius: 25 * ratioWidth,
-    borderTopRightRadius: 25 * ratioWidth,
+    borderRadius: 25 * ratioWidth,
     backgroundColor: COLORS.primary,
   },
   avt: {
     width: 256 * ratioWidth,
     height: 256 * ratioHeight,
-  },
-
-  avt_button: {
-    borderBottomLeftRadius: 25 * ratioWidth,
-    borderBottomRightRadius: 25 * ratioWidth,
-    borderLeftWidth: 1,
-    borderRightWidth: 1,
-    borderBottomWidth: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-  },
-  avt_button_icon: {
-    width: 64 * ratioWidth,
-    height: 64 * ratioHeight,
   },
 
   //Data fields

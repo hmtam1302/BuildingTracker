@@ -73,7 +73,11 @@ const Statistics = ({route, navigation}) => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Header hasNotificationButton={false} />
+      <Header
+        hasNotificationButton={false}
+        username={username}
+        navigation={navigation}
+      />
 
       {/* Main section */}
       <View style={styles.main_section}>

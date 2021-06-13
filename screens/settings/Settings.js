@@ -3,9 +3,20 @@ import {Text, View, StyleSheet, SafeAreaView, Image} from 'react-native';
 
 import {COLORS, FONTS, icons, ratioWidth} from '../../constants';
 import {Element} from './components';
+import {UserController} from '../../data';
 
 const Settings = ({route, navigation}) => {
   const username = route.params.username;
+  const [fullname, setFullname] = React.useState('User');
+
+  React.useEffect(() => {
+    const getUserFullname = async () => {
+      let response = await new UserController(username).getData();
+      let data = await response.json();
+      setFullname(data.full_name);
+    };
+    getUserFullname();
+  }, [username]);
   return (
     <SafeAreaView style={styles.container}>
       {/* Header */}
@@ -18,7 +29,7 @@ const Settings = ({route, navigation}) => {
           />
         </View>
         <View style={styles.header_text_wrapper}>
-          <Text style={styles.heading}>Huỳnh Công Hải</Text>
+          <Text style={styles.heading}>{fullname ? fullname : 'User'}</Text>
           <Text style={styles.job}>IT Staff</Text>
         </View>
       </View>
