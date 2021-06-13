@@ -34,8 +34,7 @@ const ChangeLimit = ({route, navigation}) => {
     const getValue = async () => {
       console.log('Data');
       let response = await new SystemController().getValue();
-      let data = await response.json();
-      data = data.system;
+      let data = response.system;
       setTemperature(data.temperature);
       setNoise(data.noise);
       setGas(data.gas);

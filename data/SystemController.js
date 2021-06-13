@@ -23,7 +23,8 @@ class SystemController {
   //Get system limits
   getValue = async () => {
     let response = await fetch(this.url);
-    return response;
+    let data = await response.json();
+    return data;
   };
 
   //Update system limits

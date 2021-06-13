@@ -13,10 +13,10 @@ import {
   GasController,
   DATA,
   UserController,
+  SystemController,
 } from '../../data';
 
 const Home = ({route, navigation}) => {
-  //Get current time
   const getCurrent = () => {
     let current = new Date();
     let year = current.getFullYear();
@@ -76,32 +76,41 @@ const Home = ({route, navigation}) => {
       controller.sendFeedData('0');
     }
   });
+
   //Fetch temperature data
   const [temp, setTemp] = useState({
-    limit: DATA.TEMP_LIMIT,
+    limit: 9999,
     current: 0,
     status: 'Normal',
     detail: 'None',
   });
   useEffect(() => {
     const tempController = new TempController();
-    tempController.fetchFeedData().then(res => {
-      let obj = JSON.parse(res.last_value).data;
-      setTemp({
-        limit: DATA.TEMP_LIMIT,
-        current: obj.split('-')[0],
-        status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT, 'Temperature'),
-        detail: 'None',
-      });
-    });
-    const interval = setInterval(() => {
+    const systemController = new SystemController();
+    systemController.getValue().then(value => {
+      let data = value.system.temperature;
       tempController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setTemp({
-          limit: DATA.TEMP_LIMIT,
+          limit: data,
           current: obj.split('-')[0],
-          status: getStatus(obj.split('-')[0], DATA.TEMP_LIMIT, 'Temperature'),
+          status: getStatus(obj.split('-')[0], data, 'Temperature'),
           detail: 'None',
+        });
+        console.log(temp);
+      });
+    });
+    const interval = setInterval(() => {
+      systemController.getValue().then(value => {
+        let data = value.system.temperature;
+        tempController.fetchFeedData().then(res => {
+          let obj = JSON.parse(res.last_value).data;
+          setTemp({
+            limit: data,
+            current: obj.split('-')[0],
+            status: getStatus(obj.split('-')[0], data, 'Temperature'),
+            detail: 'None',
+          });
         });
       });
     }, DATA.TIME_REQUEST * 1000);
@@ -111,30 +120,37 @@ const Home = ({route, navigation}) => {
 
   //Fetch noise controller
   const [noise, setNoise] = useState({
-    limit: DATA.NOISE_LIMIT,
+    limit: 9999,
     current: 0,
     status: 'Normal',
     detail: 'None',
   });
   useEffect(() => {
     const noiseController = new NoiseController();
-    noiseController.fetchFeedData().then(res => {
-      let obj = JSON.parse(res.last_value).data;
-      setNoise({
-        limit: DATA.NOISE_LIMIT,
-        current: obj,
-        status: getStatus(obj, DATA.NOISE_LIMIT, 'Noise'),
-        detail: 'None',
-      });
-    });
-    const interval = setInterval(() => {
+    const systemController = new SystemController();
+    systemController.getValue().then(value => {
+      let data = value.system.noise;
       noiseController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setNoise({
-          limit: DATA.NOISE_LIMIT,
+          limit: data,
           current: obj,
-          status: getStatus(obj, DATA.NOISE_LIMIT, 'Noise'),
+          status: getStatus(obj, data, 'Noise'),
           detail: 'None',
+        });
+      });
+    });
+    const interval = setInterval(() => {
+      systemController.getValue().then(value => {
+        let data = value.system.noise;
+        noiseController.fetchFeedData().then(res => {
+          let obj = JSON.parse(res.last_value).data;
+          setNoise({
+            limit: data,
+            current: obj,
+            status: getStatus(obj, data, 'Noise'),
+            detail: 'None',
+          });
         });
       });
     }, DATA.TIME_REQUEST * 1000);
@@ -144,30 +160,37 @@ const Home = ({route, navigation}) => {
 
   //Fetch gas data
   const [gas, setGas] = useState({
-    limit: DATA.GAS_LIMIT,
+    limit: 9999,
     current: 0,
     status: 'Normal',
     detail: 'None',
   });
   useEffect(() => {
     const gasController = new GasController();
-    gasController.fetchFeedData().then(res => {
-      let obj = JSON.parse(res.last_value).data;
-      setGas({
-        limit: DATA.GAS_LIMIT,
-        current: obj,
-        status: getStatus(obj, DATA.GAS_LIMIT, 'Gas'),
-        detail: 'None',
-      });
-    });
-    const interval = setInterval(() => {
+    const systemController = new SystemController();
+    systemController.getValue().then(value => {
+      let data = value.system.gas;
       gasController.fetchFeedData().then(res => {
         let obj = JSON.parse(res.last_value).data;
         setGas({
-          limit: DATA.GAS_LIMIT,
+          limit: data,
           current: obj,
-          status: getStatus(obj, DATA.GAS_LIMIT, 'Gas'),
+          status: getStatus(obj, data, 'Gas'),
           detail: 'None',
+        });
+      });
+    });
+    const interval = setInterval(() => {
+      systemController.getValue().then(value => {
+        let data = value.system.gas;
+        gasController.fetchFeedData().then(res => {
+          let obj = JSON.parse(res.last_value).data;
+          setGas({
+            limit: data,
+            current: obj,
+            status: getStatus(obj, data, 'Gas'),
+            detail: 'None',
+          });
         });
       });
     }, DATA.TIME_REQUEST * 1000);
