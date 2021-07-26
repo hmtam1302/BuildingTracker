@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, {useState, useEffect} from 'react';
-import {View, SafeAreaView, StyleSheet, Alert} from 'react-native';
+import {View, SafeAreaView, StyleSheet, Alert, Platform} from 'react-native';
 import {icons, COLORS} from '../../constants';
 
 import Element from './Element';
@@ -15,6 +15,51 @@ import {
   UserController,
   SystemController,
 } from '../../data';
+
+//Push notification
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import PushNotification from 'react-native-push-notification';
+
+PushNotification.configure({
+  // (optional) Called when Token is generated (iOS and Android)
+  onRegister: function (token) {
+    console.log('TOKEN:', token);
+  },
+
+  // (required) Called when a remote is received or opened, or local notification is opened
+  onNotification: function (notification) {
+    console.log('NOTIFICATION:', notification);
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
+  },
+  permissions: {
+    alert: true,
+    badge: true,
+    sound: true,
+  },
+  popInitialNotification: true,
+  requestPermissions: Platform.OS === 'ios',
+});
+
+PushNotification.createChannel(
+  {
+    channelId: 'notification', // (required)
+    channelName: 'My Notification Channel', // (required)
+    channelDescription: 'A channel to push your notifications', // (optional) default: undefined.
+    playSound: false, // (optional) default: true
+    soundName: 'default', // (optional) See `soundName` parameter of `localNotification` function
+    importance: 4, // (optional) default: 4. Int value of the Android notification importance
+    vibrate: true, // (optional) default: true. Creates the default vibration patten if true.
+  },
+  created => console.log(`createChannel returned '${created}'`), // (optional) callback returns whether the channel was created, false means it already existed.
+);
+
+const pushNotification = (msg, type) => {
+  PushNotification.localNotification({
+    channelId: 'notification', // (required) channelId, if the channel doesn't exist, notification will not trigger.
+    title: `${msg}`, // (optional)
+    message: `${type} is ${msg === 'Warning' ? 'high' : 'dangerous'}!!!`, // (required)
+  });
+};
 
 const Home = ({route, navigation}) => {
   const getCurrent = () => {
@@ -45,6 +90,7 @@ const Home = ({route, navigation}) => {
       return 'Normal';
     } else if (value / limit >= 0.75 && value / limit < 0.9) {
       //Send notification
+      pushNotification('Warning', type);
       new UserController(username).sendNotification(
         'Warning',
         type,
@@ -55,6 +101,7 @@ const Home = ({route, navigation}) => {
       //Send data to speaker
       let controller = new BaseController();
       controller.sendFeedData('100');
+      pushNotification('Danger', type);
       new UserController(username).sendNotification(
         'Danger',
         type,
@@ -72,8 +119,8 @@ const Home = ({route, navigation}) => {
       noise.status !== 'Danger' &&
       gas.status !== 'Danger'
     ) {
-      let controller = new BaseController();
-      controller.sendFeedData('0');
+      //let controller = new BaseController();
+      //controller.sendFeedData('0'); //Need to uncomment after include key
     }
   });
 
