@@ -44,6 +44,13 @@ class UserController {
     return response;
   };
 
+  //Get user settings
+  getSettings = async () => {
+    let response = await fetch(`${DATA.REQUEST_URL}${this.username}`);
+    let data = await response.json();
+    return data.settings;
+  };
+
   //Update user data
   update = async (type, value) => {
     let response = await fetch(`${DATA.REQUEST_URL}${this.username}/${type}`, {
@@ -151,6 +158,25 @@ class UserController {
         },
       },
     );
+    return response;
+  };
+
+  //Send email notification
+  sendMail = async (msg, type) => {
+    let response = await fetch(`${DATA.REQUEST_URL}${this.username}`);
+    let data = await response.json();
+    let email = data.email;
+    response = await fetch(`${DATA.REQUEST_URL}${this.username}/sendmail`, {
+      method: 'POST',
+      headers: {
+        Accept: 'application/json',
+        'Content-type': 'application/json',
+      },
+      body: JSON.stringify({
+        email: email,
+        message: `${type} is ${msg === 'Warning' ? 'high' : 'dangerous'}!!!`, // (required)
+      }),
+    });
     return response;
   };
 }

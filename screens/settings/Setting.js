@@ -58,9 +58,9 @@ const Setting = ({route, navigation}) => {
             sendData={sendPersonalData}
           />
           <SettingField
-            name="SMS"
+            name="Send email"
             hasIcon={false}
-            value={user.settings.SMS}
+            value={user.settings.email}
             type="SMS"
             sendData={sendPersonalData}
           />

@@ -62,6 +62,7 @@ const pushNotification = (msg, type) => {
 };
 
 const Home = ({route, navigation}) => {
+  const [settings, setSettings] = useState(null);
   const getCurrent = () => {
     let current = new Date();
     let year = current.getFullYear();
@@ -71,10 +72,24 @@ const Home = ({route, navigation}) => {
     let hour = current.getHours();
     let minute = current.getMinutes();
     let second = current.getSeconds();
-    return `${hour}:${minute}${second} ${date}-${month}-${year}`;
+    return `${hour}:${minute}:${second} ${date}-${month}-${year}`;
   };
 
   const username = route.params.username;
+  //Get user settings
+  useEffect(() => {
+    new UserController(route.params.username).getSettings().then(res => {
+      setSettings(res);
+    });
+    const interval = setInterval(() => {
+      new UserController(route.params.username).getSettings().then(res => {
+        setSettings(res);
+      });
+    }, DATA.TIME_REQUEST * 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
   const createAlert = type => {
     Alert.alert('Danger', `${type} is dangerous`, [
       {
@@ -90,23 +105,37 @@ const Home = ({route, navigation}) => {
       return 'Normal';
     } else if (value / limit >= 0.75 && value / limit < 0.9) {
       //Send notification
-      pushNotification('Warning', type);
+      if (settings.notification) {
+        pushNotification('Warning', type);
+      }
       new UserController(username).sendNotification(
         'Warning',
         type,
         getCurrent(),
       );
+
+      //Send mail
+      if (settings.email) {
+        new UserController(username).sendMail('Warning', type);
+      }
       return 'Alert';
     } else {
       //Send data to speaker
-      let controller = new BaseController();
-      controller.sendFeedData('100');
-      pushNotification('Danger', type);
+      // let controller = new BaseController();
+      //controller.sendFeedData('100'); //uncomment this code after insert key for sending to feed
+      if (settings.notification) {
+        pushNotification('Danger', type);
+      }
       new UserController(username).sendNotification(
         'Danger',
         type,
         getCurrent(),
       );
+
+      //Send mail
+      if (settings.email) {
+        new UserController(username).sendMail('Danger', type);
+      }
       createAlert(type);
       return 'Danger';
     }
@@ -144,7 +173,6 @@ const Home = ({route, navigation}) => {
           status: getStatus(obj.split('-')[0], data, 'Temperature'),
           detail: 'None',
         });
-        console.log(temp);
       });
     });
     const interval = setInterval(() => {
