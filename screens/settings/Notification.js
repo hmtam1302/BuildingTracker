@@ -46,6 +46,13 @@ const Notification = ({route, navigation, status, element, time, isRead}) => {
     setNotifications(notifications.filter(ele => ele._id !== id));
   };
 
+  //Clear all notification
+  const clearNotifications = () => {
+    const userController = new UserController(username);
+    notifications.map(ele => userController.deleteNotification(ele._id));
+    setNotifications(null);
+  };
+
   //Mark all as read
   const markAllAsRead = () => {
     setNotifications(
@@ -68,9 +75,18 @@ const Notification = ({route, navigation, status, element, time, isRead}) => {
 
       {/* Notification fields */}
       <View style={styles.notification_container}>
-        <TouchableOpacity style={styles.button} onPress={() => markAllAsRead()}>
-          <Text style={styles.button_text}>Mark all as read</Text>
-        </TouchableOpacity>
+        <View style={styles.button_container}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => clearNotifications()}>
+            <Text style={styles.button_text}>Clear all</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => markAllAsRead()}>
+            <Text style={styles.button_text}>Mark all as read</Text>
+          </TouchableOpacity>
+        </View>
         {isIndicatorVisible ? (
           <ActivityIndicator size="large" color={COLORS.primary} />
         ) : (
@@ -123,13 +139,17 @@ const styles = StyleSheet.create({
   },
 
   //Button
-  button: {
-    alignSelf: 'flex-end',
+  button_container: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '100%',
   },
+  button: {},
   button_text: {
     fontSize: 30 * ratioHeight,
     fontFamily: 'Roboto-Bold',
     color: COLORS.primary,
+    fontStyle: 'italic',
   },
 });
 

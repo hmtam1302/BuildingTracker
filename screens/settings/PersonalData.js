@@ -44,81 +44,76 @@ const PersonalData = ({route, navigation}) => {
   return (
     <SafeAreaView style={styles.container}>
       <Header name="Personal Data" navigation={navigation} />
-
       {/* Avatar */}
       {isIndicatorVisible ? (
         <ActivityIndicator size="large" color={COLORS.primary} />
       ) : (
-        <View style={styles.avt_container}>
-          <View style={styles.avt_wrapper}>
-            <Image
-              source={icons.programmer}
-              resizeMode="contain"
-              style={styles.avt}
-            />
+        <>
+          <View style={styles.avt_container}>
+            <View style={styles.avt_wrapper}>
+              <Image
+                source={icons.programmer}
+                resizeMode="contain"
+                style={styles.avt}
+              />
+            </View>
           </View>
-        </View>
-      )}
-
-      {/* Data fields */}
-      {isIndicatorVisible ? (
-        <ActivityIndicator size="large" color={COLORS.primary} />
-      ) : (
-        <View style={styles.data_field_container}>
-          <DataField
-            name="Full name"
-            value={user.full_name}
-            type="full_name"
-            sendData={sendPersonalData}
-          />
-          <DataField
-            name="Email"
-            value={user.email}
-            type="email"
-            sendData={sendPersonalData}
-          />
-          <DataField
-            name="Phone"
-            value={user.phone}
-            type="phone"
-            sendData={sendPersonalData}
-          />
-          <DataField
-            name="Birthday"
-            value={user.birthday}
-            type="birthday"
-            sendData={sendPersonalData}
-          />
-          <DataField
-            name="Floor"
-            value={user.floor}
-            type="floor"
-            sendData={sendPersonalData}
-          />
-          <DataField name="Role" hasIcon={false} value={user.role} />
-          <View style={styles.button_container}>
-            <TouchableOpacity
-              style={styles.button}
-              onPress={() =>
-                navigation.navigate('ChangePassword', {
-                  username: route.params.username,
-                })
-              }>
-              <Text style={styles.button_text}>Change password</Text>
-            </TouchableOpacity>
-            {user.role === 'admin' && (
+          <View style={styles.data_field_container}>
+            <DataField
+              name="Full name"
+              value={user.full_name}
+              type="full_name"
+              sendData={sendPersonalData}
+            />
+            <DataField
+              name="Email"
+              value={user.email}
+              type="email"
+              sendData={sendPersonalData}
+            />
+            <DataField
+              name="Phone"
+              value={user.phone}
+              type="phone"
+              sendData={sendPersonalData}
+            />
+            <DataField
+              name="Birthday"
+              value={user.birthday}
+              type="birthday"
+              sendData={sendPersonalData}
+            />
+            <DataField
+              name="Floor"
+              value={user.floor}
+              type="floor"
+              sendData={sendPersonalData}
+            />
+            <DataField name="Role" hasIcon={false} value={user.role} />
+            <View style={styles.button_container}>
               <TouchableOpacity
                 style={styles.button}
                 onPress={() =>
-                  navigation.navigate('ChangeLimit', {
+                  navigation.navigate('ChangePassword', {
                     username: route.params.username,
                   })
                 }>
-                <Text style={styles.button_text}>Change limit</Text>
+                <Text style={styles.button_text}>Change password</Text>
               </TouchableOpacity>
-            )}
+              {user.role === 'admin' && (
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() =>
+                    navigation.navigate('ChangeLimit', {
+                      username: route.params.username,
+                    })
+                  }>
+                  <Text style={styles.button_text}>Change limit</Text>
+                </TouchableOpacity>
+              )}
+            </View>
           </View>
-        </View>
+        </>
       )}
     </SafeAreaView>
   );

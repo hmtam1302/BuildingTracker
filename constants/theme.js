@@ -94,8 +94,8 @@ export const STYLE = {
     elevation: 4,
   },
   border: {
-    borderWidth: 2,
+    borderBottomWidth: 1,
     borderColor: COLORS.border_color,
-    borderRadius: 50,
+    borderRadius: 25,
   },
 };
